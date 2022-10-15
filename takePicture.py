@@ -1,29 +1,33 @@
 import cv2
 
-cam = cv2.VideoCapture(0) # initializing webcam
+def capture():
 
-img_counter = 0
+    cam = cv2.VideoCapture(0) # initializing webcam
 
-while True:
-    success, frame = cam.read()
 
-    if not success:
-        print('failed to grab frame')
-        break
+    while True:
+        success, img = cam.read()
 
-    cv2.imshow('test', frame)
-    k = cv2.waitKey(1)   # setting a key to close the application
+        if not success:
+            print('failed to grab frame')
+            break
 
-    if k%256 == 27: # checking for ESC key
-        print('ESC hit, closing the app')
-        break
+        cv2.imshow('Register', img)
+        k = cv2.waitKey(1)   # setting a key to close the application
 
-    elif k%256 == 32: # cheking for the spacebar
-        img_name = 'opencv_frame_{}.png'.format(img_counter)
-        cv2.imwrite(img_name, frame)
-        print('Screeshot taken')
-        img_counter+=1
+        if k%256 == 27: # checking for ESC key
+            print('ESC hit, closing the app')
+            break
 
-cam.release() # releasing camera
+        elif k%256 == 32: # cheking for the spacebar
+            #img_name = 'opencv_frame_{}.png'.format(img_counter)
+            #cv2.imwrite(img_name, img)
+            print('Screeshot taken')
+            #img_counter+=1
+            break
 
-cam.destroyAllWindows() # after we're finished destroy all windows
+    cam.release() # releasing camera
+
+    cv2.destroyWindow('Register') # after we're finished destroy all windows
+
+    return img
