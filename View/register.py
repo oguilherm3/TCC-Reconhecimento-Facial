@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'Register.ui'
+# Form implementation generated from reading ui file 'RegisterV2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -76,6 +76,13 @@ class Ui_RegisterWindow(object):
         self.lblAddress = QtWidgets.QLabel(self.frRegister)
         self.lblAddress.setGeometry(QtCore.QRect(20, 280, 47, 13))
         self.lblAddress.setObjectName("lblAddress")
+        self.rdbStudent = QtWidgets.QRadioButton(self.frRegister)
+        self.rdbStudent.setGeometry(QtCore.QRect(30, 30, 81, 21))
+        self.rdbStudent.setObjectName("rdbStudent")
+        #self.rdbStudent.toggled()
+        self.rdnEmployee = QtWidgets.QRadioButton(self.frRegister)
+        self.rdnEmployee.setGeometry(QtCore.QRect(150, 30, 82, 17))
+        self.rdnEmployee.setObjectName("rdnEmployee")
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(540, 70, 451, 351))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -135,6 +142,8 @@ class Ui_RegisterWindow(object):
         self.lblCEP.setText(_translate("RegisterWindow", "CEP"))
         self.lblComplement.setText(_translate("RegisterWindow", "Complemento"))
         self.lblAddress.setText(_translate("RegisterWindow", "Endereço: "))
+        self.rdbStudent.setText(_translate("RegisterWindow", "Aluno"))
+        self.rdnEmployee.setText(_translate("RegisterWindow", "Funcionário"))
         self.lblCourse.setText(_translate("RegisterWindow", "Curso: "))
         self.lblCampus.setText(_translate("RegisterWindow", "Unidade: "))
         self.btnPicture_2.setText(_translate("RegisterWindow", "Tirar Foto"))
