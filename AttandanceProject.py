@@ -3,7 +3,7 @@ import numpy as np
 import face_recognition
 import os
 
-path = 'ImagesAttendance'
+path = 'Resources/ImagesAttendance'
 images = []
 classNames = []
 myList = os.listdir(path)
@@ -12,7 +12,7 @@ for cl in myList:
     curImg = cv2.imread(f'{path}/{cl}')
     images.append(curImg)
     classNames.append(os.path.splitext(cl)[0])
-print(classNames)
+print('classNames', classNames)
 
 def findEncodins(images):
     encodelist = []
@@ -37,8 +37,9 @@ while True:
 
     for encodeFace, faceLoc in zip(encodesCurFrame, facesCurFrame):
         matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
+        print('matches', matches)
         faceDis = face_recognition.face_distance(encodeListKnown, encodeFace)
-        print(faceDis)
+        print('faceDis: ', faceDis)
         matchIndex = np.argmin(faceDis)
 
         if matches[matchIndex]:
