@@ -11,9 +11,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 
+
 class Ui_RegisterWindow(object):
     def setupUi(self, RegisterWindow):
-        cur = os.getcwd().replace('View', 'Resources') # get current dir --> change to Resources
+        cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
         path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
 
         RegisterWindow.setObjectName("RegisterWindow")
@@ -82,7 +83,7 @@ class Ui_RegisterWindow(object):
         self.rdbStudent = QtWidgets.QRadioButton(self.frRegister)
         self.rdbStudent.setGeometry(QtCore.QRect(30, 30, 81, 21))
         self.rdbStudent.setObjectName("rdbStudent")
-        #self.rdbStudent.toggled()
+        # self.rdbStudent.toggled()
         self.rdnEmployee = QtWidgets.QRadioButton(self.frRegister)
         self.rdnEmployee.setGeometry(QtCore.QRect(150, 30, 82, 17))
         self.rdnEmployee.setObjectName("rdnEmployee")
@@ -119,9 +120,9 @@ class Ui_RegisterWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.btnPicture_2 = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.btnPicture_2.setObjectName("btnPicture_2")
-        self.verticalLayout.addWidget(self.btnPicture_2)
+        self.btnPicture = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.btnPicture.setObjectName("btnPicture")
+        self.verticalLayout.addWidget(self.btnPicture)
         self.btnRegister = QtWidgets.QPushButton(self.centralwidget)
         self.btnRegister.setGeometry(QtCore.QRect(470, 550, 91, 41))
         self.btnRegister.setObjectName("btnRegister")
@@ -149,12 +150,13 @@ class Ui_RegisterWindow(object):
         self.rdnEmployee.setText(_translate("RegisterWindow", "Funcionário"))
         self.lblCourse.setText(_translate("RegisterWindow", "Curso: "))
         self.lblCampus.setText(_translate("RegisterWindow", "Unidade: "))
-        self.btnPicture_2.setText(_translate("RegisterWindow", "Tirar Foto"))
+        self.btnPicture.setText(_translate("RegisterWindow", "Tirar Foto"))
         self.btnRegister.setText(_translate("RegisterWindow", "Cadastrar"))
-#import img_rc
 
 
-if __name__ == "__main__":
+# import img_rc
+
+def main():
     import sys
     app = QtWidgets.QApplication(sys.argv)
     RegisterWindow = QtWidgets.QMainWindow()
@@ -162,3 +164,7 @@ if __name__ == "__main__":
     ui.setupUi(RegisterWindow)
     RegisterWindow.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()
