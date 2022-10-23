@@ -9,10 +9,13 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import os
 
 class Ui_RegisterWindow(object):
     def setupUi(self, RegisterWindow):
+        cur = os.getcwd().replace('View', 'Resources') # get current dir --> change to Resources
+        path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
+
         RegisterWindow.setObjectName("RegisterWindow")
         RegisterWindow.resize(1045, 633)
         self.centralwidget = QtWidgets.QWidget(RegisterWindow)
@@ -90,7 +93,7 @@ class Ui_RegisterWindow(object):
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(20, 10, 421, 330))
-        self.label.setStyleSheet("image: url(C:/Users/Guilherme/Downloads/PngItem_1503945.png);")
+        self.label.setStyleSheet("image: url(" + path + ");")
         self.label.setText("")
         self.label.setObjectName("label")
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
