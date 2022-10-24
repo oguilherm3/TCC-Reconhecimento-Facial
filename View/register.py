@@ -10,12 +10,16 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
-
+import takePicture
+from PIL import Image
 
 class Ui_RegisterWindow(object):
+    cur = os.getcwd().replace('Controller', 'Resources')  # get current dir --> change to Resources
+    path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
+    temppath = path.replace('/Images/RegisterProfilePhoto.png', 'C:/Users/Guilherme/PycharmProjects/FaceRecognitionProject/Controller/temp_photo.png')
+
     def setupUi(self, RegisterWindow):
-        cur = os.getcwd().replace('Controller', 'Resources')  # get current dir --> change to Resources
-        path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
+
         RegisterWindow.setObjectName("RegisterWindow")
         RegisterWindow.resize(1045, 633)
         self.centralwidget = QtWidgets.QWidget(RegisterWindow)
@@ -93,7 +97,7 @@ class Ui_RegisterWindow(object):
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(20, 10, 421, 330))
-        self.label.setStyleSheet("image: url(" + path + ");")
+        self.label.setStyleSheet("image: url(" + self.path + ");")
         self.label.setText("")
         self.label.setObjectName("label")
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
@@ -121,6 +125,7 @@ class Ui_RegisterWindow(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.btnPicture = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.btnPicture.setObjectName("btnPicture")
+        self.btnPicture.clicked.connect(self.takePicture)
         self.verticalLayout.addWidget(self.btnPicture)
         self.btnRegister = QtWidgets.QPushButton(self.centralwidget)
         self.btnRegister.setGeometry(QtCore.QRect(470, 550, 91, 41))
@@ -132,6 +137,15 @@ class Ui_RegisterWindow(object):
 
         self.retranslateUi(RegisterWindow)
         QtCore.QMetaObject.connectSlotsByName(RegisterWindow)
+    def takePicture(self):
+        img = takePicture.capture()
+        Image.fromarray(img).save('temp_photo.png')
+
+        self.update()
+
+    def update(self):
+        self.label.setStyleSheet(f"image: {self.temppath};")
+        self.label.adjustSize()
 
     def retranslateUi(self, RegisterWindow):
         _translate = QtCore.QCoreApplication.translate
