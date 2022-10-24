@@ -14,9 +14,8 @@ import os
 
 class Ui_RegisterWindow(object):
     def setupUi(self, RegisterWindow):
-        cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
+        cur = os.getcwd().replace('Controller', 'Resources')  # get current dir --> change to Resources
         path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
-
         RegisterWindow.setObjectName("RegisterWindow")
         RegisterWindow.resize(1045, 633)
         self.centralwidget = QtWidgets.QWidget(RegisterWindow)

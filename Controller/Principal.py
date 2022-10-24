@@ -1,5 +1,5 @@
-from View.register import Ui_RegisterWindow
+from View import register
 
 if __name__ == '__main__':
-    tela = Ui_RegisterWindow
-    tela
+    tela = register
+    tela.main()
