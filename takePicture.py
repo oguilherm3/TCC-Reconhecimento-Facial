@@ -4,10 +4,8 @@ def capture():
 
     cam = cv2.VideoCapture(0) # initializing webcam
 
-
     while True:
         success, img = cam.read()
-
         if not success:
             print('failed to grab frame')
             break
@@ -27,7 +25,6 @@ def capture():
             break
 
     cam.release() # releasing camera
+    cv2.destroyWindow('Register') # after we're finished destroy the Register window
 
-    cv2.destroyWindow('Register') # after we're finished destroy all windows
-
-    return img
+    return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
