@@ -19,3 +19,6 @@ class Aluno(Pessoa):
 
     def findFace(self):
         pass
+
+    def register_student(self):
+        AlunoDAO.insert(self)
