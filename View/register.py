@@ -13,6 +13,9 @@ import os
 import takePicture
 from PIL import Image
 
+from Model.Aluno import Aluno
+
+
 class Ui_RegisterWindow(object):
     cur = os.getcwd().replace('Controller', 'Resources')  # get current dir --> change to Resources
     path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
@@ -130,6 +133,7 @@ class Ui_RegisterWindow(object):
         self.btnRegister = QtWidgets.QPushButton(self.centralwidget)
         self.btnRegister.setGeometry(QtCore.QRect(470, 550, 91, 41))
         self.btnRegister.setObjectName("btnRegister")
+        self.btnRegister.clicked.connect(self.register)
         RegisterWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(RegisterWindow)
         self.statusbar.setObjectName("statusbar")
@@ -146,6 +150,24 @@ class Ui_RegisterWindow(object):
     def update(self):
         self.label.setStyleSheet(f"image: {self.temppath};")
         self.label.adjustSize()
+        self.label.update()
+
+    def register(self):
+        #birthdate
+        a = Aluno(
+            nome=self.txtName.displayText(),
+            rg = self.txtRG.displayText(),
+            cpf = self.txtCPF.displayText(),
+            face = ''
+        )
+
+        a.phone = self.txtPhone.displayText()
+        a.cep = self.txtCEP.displayText()
+        a.address = self.txtAddress.displayText()
+
+        a.register_student()
+
+
 
     def retranslateUi(self, RegisterWindow):
         _translate = QtCore.QCoreApplication.translate
