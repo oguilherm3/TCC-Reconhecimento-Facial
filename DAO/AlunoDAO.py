@@ -1,5 +1,8 @@
 from Connection.ConnectionFactory import Connection
 
 def insert(aluno):
-    collection = Connection.getConnection('Aluno')
-    collection.insert_one(aluno.__dict__)
+    try:
+        collection = Connection.getConnection('Aluno')
+        collection.insert_one(aluno.__dict__)
+    except Exception as e:
+        print('Error in mongo insert: ', e)
