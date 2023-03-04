@@ -1,5 +1,5 @@
 import cv2
-
+import os
 def capture():
 
     cam = cv2.VideoCapture(0) # initializing webcam
@@ -10,7 +10,7 @@ def capture():
             print('failed to grab frame')
             break
 
-        cv2.imshow('Register', img)
+        cv2.imshow('Foto', img)
         k = cv2.waitKey(1)   # setting a key to close the application
 
         if k%256 == 27: # checking for ESC key
@@ -18,13 +18,10 @@ def capture():
             break
 
         elif k%256 == 32: # cheking for the spacebar
-            #img_name = 'opencv_frame_{}.png'.format(img_counter)
-            #cv2.imwrite(img_name, img)
             print('Screeshot taken')
-            #img_counter+=1
             break
 
     cam.release() # releasing camera
-    cv2.destroyWindow('Register') # after we're finished destroy the Register window
+    cv2.destroyWindow('Foto') # after we're finished destroy the Register window
 
     return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
