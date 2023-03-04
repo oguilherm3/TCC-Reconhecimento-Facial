@@ -19,7 +19,7 @@ from Model.Aluno import Aluno
 class Ui_RegisterWindow(object):
     cur = os.getcwd().replace('Controller', 'Resources')  # get current dir --> change to Resources
     path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
-    temppath = path.replace('/Images/RegisterProfilePhoto.png', 'C:/Users/Guilherme/PycharmProjects/FaceRecognitionProject/Controller/temp_photo.png')
+    temp_path = path.replace('/RegisterProfilePhoto.png', '/temp_photo.png')
 
     def setupUi(self, RegisterWindow):
 
@@ -143,14 +143,12 @@ class Ui_RegisterWindow(object):
         QtCore.QMetaObject.connectSlotsByName(RegisterWindow)
     def takePicture(self):
         img = takePicture.capture()
-        Image.fromarray(img).save('temp_photo.png')
+        Image.fromarray(img).save('../Resources/Images/temp_photo.png')
 
         self.update()
 
     def update(self):
-        self.label.setStyleSheet(f"image: {self.temppath};")
-        self.label.adjustSize()
-        self.label.update()
+        self.label.setStyleSheet("image: url(" + self.temp_path + ");") #TODO: try to replace by the temp img
 
     def register(self):
         #birthdate
@@ -171,7 +169,7 @@ class Ui_RegisterWindow(object):
 
     def retranslateUi(self, RegisterWindow):
         _translate = QtCore.QCoreApplication.translate
-        RegisterWindow.setWindowTitle(_translate("RegisterWindow", "MainWindow"))
+        RegisterWindow.setWindowTitle(_translate("RegisterWindow", "Cadastrar"))
         self.lblName.setText(_translate("RegisterWindow", "Nome: "))
         self.lblRG.setText(_translate("RegisterWindow", "RG:"))
         self.lblCPF.setText(_translate("RegisterWindow", "CPF: "))
