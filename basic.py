@@ -2,10 +2,10 @@ import cv2
 import numpy as np
 import face_recognition
 
-imgGuilherme = face_recognition.load_image_file('ImageBasic/guilherme.jpeg')
+imgGuilherme = face_recognition.load_image_file('Resources/ImageBasic/guilherme.jpeg')
 imgGuilherme = cv2.cvtColor(imgGuilherme, cv2.COLOR_BGR2RGB)
 
-imgTest = face_recognition.load_image_file('ImageBasic/Bill gates.jpg')
+imgTest = face_recognition.load_image_file('Resources/ImageBasic/Bill gates.jpg')
 imgTest = cv2.cvtColor(imgTest, cv2.COLOR_BGR2RGB)
 
 # Finding faces and Encoding
