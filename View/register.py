@@ -153,7 +153,7 @@ class Ui_RegisterWindow(object):
     def register(self):
         #birthdate
         a = Aluno(
-            nome=self.txtName.displayText(),
+            nome = self.txtName.displayText(),
             rg = self.txtRG.displayText(),
             cpf = self.txtCPF.displayText(),
             face = ''
@@ -193,6 +193,7 @@ def main():
     import sys
     app = QtWidgets.QApplication(sys.argv)
     RegisterWindow = QtWidgets.QMainWindow()
+    RegisterWindow.setFixedSize(1045, 633)
     ui = Ui_RegisterWindow()
     ui.setupUi(RegisterWindow)
     RegisterWindow.show()
