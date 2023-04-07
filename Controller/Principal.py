@@ -1,5 +1,5 @@
-from View import register
+from View import Cadastro
 
 if __name__ == '__main__':
-    tela = register
+    tela = Cadastro
     tela.main()

@@ -17,7 +17,7 @@ from Model.Aluno import Aluno
 
 
 class Ui_RegisterWindow(object):
-    cur = os.getcwd().replace('Controller', 'Resources')  # get current dir --> change to Resources
+    cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
     path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
     temp_path = path.replace('/RegisterProfilePhoto.png', '/temp_photo.png')
 
@@ -25,6 +25,8 @@ class Ui_RegisterWindow(object):
 
         RegisterWindow.setObjectName("RegisterWindow")
         RegisterWindow.resize(1045, 633)
+        #RegisterWindow.setMenuBar() TODO: Review!
+        RegisterWindow.setStyleSheet('background-color: rgb(255, 255, 255);')
         self.centralwidget = QtWidgets.QWidget(RegisterWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frRegister = QtWidgets.QFrame(self.centralwidget)
@@ -41,6 +43,7 @@ class Ui_RegisterWindow(object):
         self.txtRG = QtWidgets.QLineEdit(self.frRegister)
         self.txtRG.setGeometry(QtCore.QRect(20, 140, 181, 20))
         self.txtRG.setObjectName("txtRG")
+        self.txtRG.setInputMask("00.000.000 - >N")
         self.lblRG = QtWidgets.QLabel(self.frRegister)
         self.lblRG.setGeometry(QtCore.QRect(20, 120, 47, 13))
         self.lblRG.setObjectName("lblRG")
@@ -50,12 +53,15 @@ class Ui_RegisterWindow(object):
         self.txtCPF = QtWidgets.QLineEdit(self.frRegister)
         self.txtCPF.setGeometry(QtCore.QRect(220, 140, 201, 20))
         self.txtCPF.setObjectName("txtCPF")
+        self.txtCPF.setMaxLength(14)
+        self.txtCPF.setInputMask("000.000.000-00")
         self.lblPhone = QtWidgets.QLabel(self.frRegister)
         self.lblPhone.setGeometry(QtCore.QRect(20, 170, 47, 13))
         self.lblPhone.setObjectName("lblPhone")
         self.txtPhone = QtWidgets.QLineEdit(self.frRegister)
         self.txtPhone.setGeometry(QtCore.QRect(20, 190, 181, 20))
         self.txtPhone.setObjectName("txtPhone")
+        self.txtPhone.setInputMask("(00) 00000 - 0000")
         self.lblBirthDate = QtWidgets.QLabel(self.frRegister)
         self.lblBirthDate.setGeometry(QtCore.QRect(220, 170, 101, 16))
         self.lblBirthDate.setObjectName("lblBirthDate")
@@ -68,9 +74,12 @@ class Ui_RegisterWindow(object):
         self.lblUF = QtWidgets.QLabel(self.frRegister)
         self.lblUF.setGeometry(QtCore.QRect(220, 220, 61, 16))
         self.lblUF.setObjectName("lblUF")
+        self.lblUF.setDisabled(True)
         self.txtCEP = QtWidgets.QLineEdit(self.frRegister)
         self.txtCEP.setGeometry(QtCore.QRect(20, 240, 181, 20))
         self.txtCEP.setObjectName("txtCEP")
+        self.txtCEP.setInputMask("00000-000")
+        self.txtCEP.setMaxLength(8)
         self.lblCEP = QtWidgets.QLabel(self.frRegister)
         self.lblCEP.setGeometry(QtCore.QRect(20, 220, 71, 16))
         self.lblCEP.setObjectName("lblCEP")
@@ -83,16 +92,18 @@ class Ui_RegisterWindow(object):
         self.txtAddress = QtWidgets.QLineEdit(self.frRegister)
         self.txtAddress.setGeometry(QtCore.QRect(20, 300, 401, 20))
         self.txtAddress.setObjectName("txtAddress")
+        self.txtAddress.setDisabled(True)
         self.lblAddress = QtWidgets.QLabel(self.frRegister)
         self.lblAddress.setGeometry(QtCore.QRect(20, 280, 47, 13))
         self.lblAddress.setObjectName("lblAddress")
         self.rdbStudent = QtWidgets.QRadioButton(self.frRegister)
         self.rdbStudent.setGeometry(QtCore.QRect(30, 30, 81, 21))
         self.rdbStudent.setObjectName("rdbStudent")
-        # self.rdbStudent.toggled()
+        self.rdbStudent.setChecked(True)
         self.rdnEmployee = QtWidgets.QRadioButton(self.frRegister)
         self.rdnEmployee.setGeometry(QtCore.QRect(150, 30, 82, 17))
         self.rdnEmployee.setObjectName("rdnEmployee")
+        self.rdnEmployee.setDisabled(True)
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setGeometry(QtCore.QRect(540, 70, 451, 351))
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
