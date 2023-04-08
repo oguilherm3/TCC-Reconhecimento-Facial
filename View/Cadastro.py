@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import requests
 # Form implementation generated from reading ui file 'RegisterV2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
@@ -24,8 +24,8 @@ class Ui_RegisterWindow(object):
     def setupUi(self, RegisterWindow):
 
         RegisterWindow.setObjectName("RegisterWindow")
-        RegisterWindow.resize(1045, 633)
-        #RegisterWindow.setMenuBar() TODO: Review!
+        RegisterWindow.setFixedSize(1045, 633)
+        # RegisterWindow.setMenuBar() TODO: Review!
         RegisterWindow.setStyleSheet('background-color: rgb(255, 255, 255);')
         self.centralwidget = QtWidgets.QWidget(RegisterWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -54,7 +54,7 @@ class Ui_RegisterWindow(object):
         self.txtCPF.setGeometry(QtCore.QRect(220, 140, 201, 20))
         self.txtCPF.setObjectName("txtCPF")
         self.txtCPF.setMaxLength(14)
-        self.txtCPF.setInputMask("000.000.000-00")
+        self.txtCPF.setInputMask("000.000.000 - 00")
         self.lblPhone = QtWidgets.QLabel(self.frRegister)
         self.lblPhone.setGeometry(QtCore.QRect(20, 170, 47, 13))
         self.lblPhone.setObjectName("lblPhone")
@@ -78,8 +78,9 @@ class Ui_RegisterWindow(object):
         self.txtCEP = QtWidgets.QLineEdit(self.frRegister)
         self.txtCEP.setGeometry(QtCore.QRect(20, 240, 181, 20))
         self.txtCEP.setObjectName("txtCEP")
-        self.txtCEP.setInputMask("00000-000")
+        self.txtCEP.setInputMask("00000 - 000")
         self.txtCEP.setMaxLength(8)
+        self.txtCEP.textEdited.connect(self.autoFillCep)
         self.lblCEP = QtWidgets.QLabel(self.frRegister)
         self.lblCEP.setGeometry(QtCore.QRect(20, 220, 71, 16))
         self.lblCEP.setObjectName("lblCEP")
@@ -152,6 +153,7 @@ class Ui_RegisterWindow(object):
 
         self.retranslateUi(RegisterWindow)
         QtCore.QMetaObject.connectSlotsByName(RegisterWindow)
+
     def takePicture(self):
         img = takePicture.capture()
         Image.fromarray(img).save('../Resources/Images/temp_photo.png')
@@ -159,15 +161,15 @@ class Ui_RegisterWindow(object):
         self.update()
 
     def update(self):
-        self.label.setStyleSheet("image: url(" + self.temp_path + ");") #TODO: try to replace by the temp img
+        self.label.setStyleSheet("image: url(" + self.temp_path + ");")
 
     def register(self):
-        #birthdate
+        # birthdate
         a = Aluno(
-            nome = self.txtName.displayText(),
-            rg = self.txtRG.displayText(),
-            cpf = self.txtCPF.displayText(),
-            face = ''
+            nome=self.txtName.displayText(),
+            rg=self.txtRG.displayText(),
+            cpf=self.txtCPF.displayText(),
+            face=''
         )
 
         a.phone = self.txtPhone.displayText()
@@ -176,7 +178,24 @@ class Ui_RegisterWindow(object):
 
         a.register_student()
 
+    def autoFillCep(self):
+        if len(self.txtCEP.text()) == 11:
+            cep = self.txtCEP.text().replace('-', '').replace(' ', '')
+            result = self.getCep(cep)
+            endereco = result["logradouro"] + ', ' + result["bairro"]
+            uf = result["uf"]
+            self.txtAddress.setText(endereco)
+            self.cbxUF.addItem(uf)
+            self.cbxUF.setDisabled(True)
 
+    def getCep(self, cep):
+        endpoint = "https://viacep.com.br/ws/CEP/json/".replace('CEP', cep)
+        try:
+            request = requests.get(endpoint).json()
+            print(f'{request}')
+            return request
+        except Exception as e:
+            print('Error in the Request: ', e)
 
     def retranslateUi(self, RegisterWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -204,7 +223,6 @@ def main():
     import sys
     app = QtWidgets.QApplication(sys.argv)
     RegisterWindow = QtWidgets.QMainWindow()
-    RegisterWindow.setFixedSize(1045, 633)
     ui = Ui_RegisterWindow()
     ui.setupUi(RegisterWindow)
     RegisterWindow.show()
