@@ -13,6 +13,7 @@ import os
 import takePicture
 from PIL import Image
 
+from Connection.ConnectionFactory import ConnectionFactory
 from Model.Aluno import Aluno
 
 
@@ -181,12 +182,14 @@ class Ui_RegisterWindow(object):
     def autoFillCep(self):
         if len(self.txtCEP.text()) == 11:
             cep = self.txtCEP.text().replace('-', '').replace(' ', '')
-            result = self.getCep(cep)
+            result = ConnectionFactory.getCep(cep)
             endereco = result["logradouro"] + ', ' + result["bairro"]
             uf = result["uf"]
+            cidade = result["localidade"]
             self.txtAddress.setText(endereco)
             self.cbxUF.addItem(uf)
             self.cbxUF.setDisabled(True)
+            self.txtCity.setText(cidade)
 
     def getCep(self, cep):
         endpoint = "https://viacep.com.br/ws/CEP/json/".replace('CEP', cep)
