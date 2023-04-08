@@ -72,6 +72,7 @@ class Ui_RegisterWindow(object):
         self.cbxUF = QtWidgets.QComboBox(self.frRegister)
         self.cbxUF.setGeometry(QtCore.QRect(360, 240, 61, 22))
         self.cbxUF.setObjectName("cbxUF")
+        self.cbxUF.setDisabled(True)
         self.lblUF = QtWidgets.QLabel(self.frRegister)
         self.lblUF.setGeometry(QtCore.QRect(360, 220, 61, 16))
         self.lblUF.setObjectName("lblUF")
@@ -207,19 +208,22 @@ class Ui_RegisterWindow(object):
         a.cep = self.txtCEP.displayText()
         a.address = self.txtAddress.displayText()
 
-        a.register_student()
+        if self.txtCEP != 'CEP Inválido':
+            a.register_student()
 
     def autoFillCep(self):
         if len(self.txtCEP.text()) == 11:
             cep = self.txtCEP.text().replace('-', '').replace(' ', '')
             result = ConnectionFactory.getCep(cep)
-            endereco = result["logradouro"] + ', ' + result["bairro"]
-            uf = result["uf"]
-            cidade = result["localidade"]
-            self.txtAddress.setText(endereco)
-            self.cbxUF.addItem(uf)
-            self.cbxUF.setDisabled(True)
-            self.txtCity.setText(cidade)
+            if result != 'Invalid':
+                endereco = result["logradouro"] + ', ' + result["bairro"]
+                uf = result["uf"]
+                cidade = result["localidade"]
+                self.txtAddress.setText(endereco)
+                self.cbxUF.addItem(uf)
+                self.txtCity.setText(cidade)
+            else:
+                self.txtAddress.setText('CEP Inválido')
 
 
     def retranslateUi(self, RegisterWindow):
