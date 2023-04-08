@@ -20,8 +20,11 @@ class ConnectionFactory:
         endpoint = "https://viacep.com.br/ws/CEP/json/".replace('CEP', cep)
         try:
             response = requests.get(endpoint, timeout=5).json()
-            print(f'{response}')
-            return response
+            #print(f'{response}')
+            if 'erro' in response:
+                return 'Invalid'
+            else:
+                return response
         except requests.exceptions.HTTPError as errh:
             print('Error in the HTTP: ', errh)
         except requests.exceptions.ConnectionError as errc:
@@ -29,4 +32,4 @@ class ConnectionFactory:
         except requests.exceptions.Timeout as errt:
             print('Timeout Error: ', errt)
         except requests.exceptions.RequestException as err:
-            print(err)
+            print('Error in Request: ', err)
