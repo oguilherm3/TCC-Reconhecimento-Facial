@@ -214,8 +214,8 @@ class Ui_RegisterWindow(object):
         a.cep = self.txtCEP.displayText()
         a.cep = a.cep.strip()
         a.address = self.txtAddress.displayText()
-        a.address_city = self.txtCity
-        a.address_number = self.txtNumber
+        a.address_city = self.txtCity.displayText()
+        a.address_number = self.txtNumber.displayText()
 
         a.birthDate = str(self.dateEdit.dateTime().date().toPyDate())
 
