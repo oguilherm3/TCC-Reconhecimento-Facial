@@ -11,6 +11,7 @@ import requests
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 import takePicture
+from datetime import date, datetime
 from PIL import Image
 
 from Connection.ConnectionFactory import ConnectionFactory
@@ -69,6 +70,9 @@ class Ui_RegisterWindow(object):
         self.dateEdit = QtWidgets.QDateEdit(self.frRegister)
         self.dateEdit.setGeometry(QtCore.QRect(220, 190, 110, 22))
         self.dateEdit.setObjectName("dateEdit")
+        self.dateEdit.setCalendarPopup(True)
+        self.dateEdit.setDate(date.fromisoformat("1900-01-01"))
+        self.dateEdit.setMaximumDate(date.today())
         self.cbxUF = QtWidgets.QComboBox(self.frRegister)
         self.cbxUF.setGeometry(QtCore.QRect(360, 240, 61, 22))
         self.cbxUF.setObjectName("cbxUF")
@@ -109,6 +113,7 @@ class Ui_RegisterWindow(object):
         self.txtNumber = QtWidgets.QLineEdit(self.frRegister)
         self.txtNumber.setGeometry(QtCore.QRect(360, 300, 61, 20))
         self.txtNumber.setObjectName("txtNumber")
+        self.txtNumber.setMaxLength(5)
         self.lblNumber = QtWidgets.QLabel(self.frRegister)
         self.lblNumber.setGeometry(QtCore.QRect(360, 280, 47, 13))
         self.lblNumber.setObjectName("lblNumber")
@@ -201,15 +206,22 @@ class Ui_RegisterWindow(object):
             nome=self.txtName.displayText(),
             rg=self.txtRG.displayText(),
             cpf=self.txtCPF.displayText(),
+            birthDate='',
             face=''
         )
 
         a.phone = self.txtPhone.displayText()
         a.cep = self.txtCEP.displayText()
+        a.cep = a.cep.strip()
         a.address = self.txtAddress.displayText()
+        a.address_city = self.txtCity
+        a.address_number = self.txtNumber
 
-        if self.txtCEP != 'CEP Inválido':
+        a.birthDate = str(self.dateEdit.dateTime().date().toPyDate())
+
+        if len(a.cep) > 8 and a.cep != 'CEP Inválido': # TODO colocar em um método/função
             a.register_student()
+            print('Aluno registrado com sucesso')
 
     def autoFillCep(self):
         if len(self.txtCEP.text()) == 11:
@@ -224,7 +236,6 @@ class Ui_RegisterWindow(object):
                 self.txtCity.setText(cidade)
             else:
                 self.txtAddress.setText('CEP Inválido')
-
 
     def retranslateUi(self, RegisterWindow):
         _translate = QtCore.QCoreApplication.translate

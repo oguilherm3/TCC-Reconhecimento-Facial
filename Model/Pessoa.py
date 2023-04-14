@@ -1,9 +1,9 @@
 class Pessoa:
-    def __init__(self, nome, rg, cpf):
+    def __init__(self, nome, rg, cpf, birthDate):
+        self.birthDate = birthDate
         self.name = nome
         self.rg = rg
         self.cpf = cpf
-        self.birthDate = ''
 
     def verifyCpf(self):
         pass
