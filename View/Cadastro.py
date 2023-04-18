@@ -16,13 +16,15 @@ from PIL import Image
 
 from Connection.ConnectionFactory import ConnectionFactory
 from Model.Aluno import Aluno
-
+from Model.Curso import Curso
+from Model.Campus import Campus
 
 class Ui_RegisterWindow(object):
     cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
     path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
     temp_path = path.replace('/RegisterProfilePhoto.png', '/temp_photo.png')
-
+    cursos = Curso().get_lista()
+    campi = Campus().get_lista()
     def setupUi(self, RegisterWindow):
 
         RegisterWindow.setObjectName("RegisterWindow")
@@ -146,12 +148,14 @@ class Ui_RegisterWindow(object):
         self.cbxCourse = QtWidgets.QComboBox(self.frame_2)
         self.cbxCourse.setGeometry(QtCore.QRect(10, 30, 191, 22))
         self.cbxCourse.setObjectName("cbxCourse")
+        self.cbxCourse.addItems(self.cursos)
         self.lblCampus = QtWidgets.QLabel(self.frame_2)
         self.lblCampus.setGeometry(QtCore.QRect(210, 10, 47, 13))
         self.lblCampus.setObjectName("lblCampus")
         self.cbxCampus = QtWidgets.QComboBox(self.frame_2)
         self.cbxCampus.setGeometry(QtCore.QRect(210, 30, 191, 22))
         self.cbxCampus.setObjectName("cbxCampus")
+        self.cbxCampus.addItems(self.campi)
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(700, 420, 151, 31))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
@@ -216,7 +220,8 @@ class Ui_RegisterWindow(object):
         a.address = self.txtAddress.displayText()
         a.address_city = self.txtCity.displayText()
         a.address_number = self.txtNumber.displayText()
-
+        a.campus = self.cbxCampus.currentText()
+        a.course = self.cbxCourse.currentText()
         a.birthDate = str(self.dateEdit.dateTime().date().toPyDate())
 
         if len(a.cep) > 8 and a.cep != 'CEP Inválido': # TODO colocar em um método/função
