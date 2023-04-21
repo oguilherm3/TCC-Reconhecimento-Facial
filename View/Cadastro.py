@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import requests
 # Form implementation generated from reading ui file 'RegisterV2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
@@ -18,11 +17,13 @@ from Connection.ConnectionFactory import ConnectionFactory
 from Model.Aluno import Aluno
 from Model.Curso import Curso
 from Model.Campus import Campus
+from Model.Face import Face
+
 
 class Ui_RegisterWindow(object):
     cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
     path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
-    temp_path = path.replace('/RegisterProfilePhoto.png', '/temp_photo.png')
+    temp_path = path.replace('Images/RegisterProfilePhoto.png', 'Temp/temp_photo.png')
     cursos = Curso().get_lista()
     campi = Campus().get_lista()
     def setupUi(self, RegisterWindow):
@@ -149,6 +150,7 @@ class Ui_RegisterWindow(object):
         self.cbxCourse.setGeometry(QtCore.QRect(10, 30, 191, 22))
         self.cbxCourse.setObjectName("cbxCourse")
         self.cbxCourse.addItems(self.cursos)
+        self.cbxCourse.setCurrentText('-')
         self.lblCampus = QtWidgets.QLabel(self.frame_2)
         self.lblCampus.setGeometry(QtCore.QRect(210, 10, 47, 13))
         self.lblCampus.setObjectName("lblCampus")
@@ -156,6 +158,7 @@ class Ui_RegisterWindow(object):
         self.cbxCampus.setGeometry(QtCore.QRect(210, 30, 191, 22))
         self.cbxCampus.setObjectName("cbxCampus")
         self.cbxCampus.addItems(self.campi)
+        self.cbxCampus.setCurrentText('-')
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(700, 420, 151, 31))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
@@ -197,7 +200,7 @@ class Ui_RegisterWindow(object):
 
     def takePicture(self):
         img = takePicture.capture()
-        Image.fromarray(img).save('../Resources/Images/temp_photo.png')
+        Image.fromarray(img).save(self.temp_path)
 
         self.update()
 
@@ -205,15 +208,12 @@ class Ui_RegisterWindow(object):
         self.label.setStyleSheet("image: url(" + self.temp_path + ");")
 
     def register(self):
-        # birthdate
         a = Aluno(
             nome=self.txtName.displayText(),
             rg=self.txtRG.displayText(),
             cpf=self.txtCPF.displayText(),
-            birthDate='',
-            face=''
+            birthDate=str(self.dateEdit.dateTime().date().toPyDate()),
         )
-
         a.phone = self.txtPhone.displayText()
         a.cep = self.txtCEP.displayText()
         a.cep = a.cep.strip()
@@ -222,12 +222,20 @@ class Ui_RegisterWindow(object):
         a.address_number = self.txtNumber.displayText()
         a.campus = self.cbxCampus.currentText()
         a.course = self.cbxCourse.currentText()
-        a.birthDate = str(self.dateEdit.dateTime().date().toPyDate())
 
-        if len(a.cep) > 8 and a.cep != 'CEP Inválido': # TODO colocar em um método/função
-            a.register_student()
-            print('Aluno registrado com sucesso')
+        a.face_id = self.get_faceId(a.nome)
 
+        if len(a.cep) > 8 and a.cep != 'CEP Inválido':# TODO colocar em um método/função
+            a.insert_student()
+            print(f'Aluno registrado com sucesso')
+        else:
+            print('Não foi possível registrar o Aluno')
+
+    def get_faceId(self, aluno_nome):
+        face = Face(
+            filename=aluno_nome + '.png'
+        )
+        return face.insert_face()
     def autoFillCep(self):
         if len(self.txtCEP.text()) == 11:
             cep = self.txtCEP.text().replace('-', '').replace(' ', '')

@@ -9,7 +9,7 @@ def listaCampi():
             campi.append(item['nome'])
         return campi
     except Exception as e:
-        print('Error in listing: ', e)
+        print('Error in listing Campus: ', e)
         return ["Error"]
 
 

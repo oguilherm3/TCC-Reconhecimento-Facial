@@ -9,7 +9,7 @@ def listaCursos():
             cursos.append(item['nome'])
         return cursos
     except Exception as e:
-        print('Error in listing: ', e)
+        print('Error in listing Cursos: ', e)
         return ["Error"]
 
 def insert(curso):

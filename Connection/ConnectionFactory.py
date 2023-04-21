@@ -5,6 +5,16 @@ import requests
 class ConnectionFactory:
 
     @staticmethod
+    def getDatabase(database):
+        try:
+            client = pymongo.MongoClient(
+                "mongodb+srv://unip:aluno@cluster0.c2q6lgv.mongodb.net/?retryWrites=true&w=majority")
+            db = client.get_database(database)
+            return db
+        except Exception as e:
+            print('Error getting database', e)
+
+    @staticmethod
     def getConnection(collection_name):
         try:
             client = pymongo.MongoClient(
