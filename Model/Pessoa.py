@@ -4,7 +4,3 @@ class Pessoa:
         self.nome = nome
         self.rg = rg
         self.cpf = cpf
-
-    def verifyCpf(self):
-        pass
-

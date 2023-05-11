@@ -9,6 +9,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
+
+from PyQt5.QtWidgets import QMessageBox
+
 import takePicture
 from datetime import date, datetime
 from PIL import Image
@@ -226,10 +229,11 @@ class Ui_RegisterWindow(object):
         a.face_id = self.get_faceId(a.nome)
 
         if len(a.cep) > 8 and a.cep != 'CEP Inválido':# TODO colocar em um método/função
-            a.insert_student()
+            #a.insert_student()
+            return QMessageBox.information(self.centralwidget, 'Sucesso', 'O Aluno foi inserido com sucesso!')
             print(f'Aluno registrado com sucesso')
         else:
-            print('Não foi possível registrar o Aluno')
+            return QMessageBox.warning(self.centralwidget, 'Aviso', 'Revise os dados do Aluno!')
 
     def get_faceId(self, aluno_nome):
         face = Face(
