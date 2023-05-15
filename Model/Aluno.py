@@ -2,19 +2,23 @@ from Model.Pessoa import Pessoa
 from DAO import AlunoDAO
 
 
+def get_Alunos():
+    return AlunoDAO.listaAlunos()
+
+
 class Aluno(Pessoa):
-    def __init__(self, nome, rg, cpf, birthDate):  # Aluno Constructor
+    def __init__(self, _id, nome, rg, cpf, birthDate, course, campus, cep, address, address_complement, address_number, address_city, face_id, phone):  # Aluno Constructor
         super().__init__(nome, rg, cpf, birthDate)  # Pessoa Constructor
-        self.id = str()
-        self.course = str()
-        self.campus = str()
-        self.cep = str()
-        self.address = str()
-        self.address_complement = str()
-        self.address_number = str()
-        self.address_city = str()
-        self.face_id = str()
-        self.phone = str()
+        self._id = _id
+        self.course = course
+        self.campus = campus
+        self.cep = cep
+        self.address = address
+        self.address_complement = address_complement
+        self.address_number = address_number
+        self.address_city = address_city
+        self.face_id = face_id
+        self.phone = phone
         self.raGenerator()
         self.findFace()
 
@@ -30,8 +34,7 @@ class Aluno(Pessoa):
     def register_student(self, photo):
         aluno_id = AlunoDAO.insert_getId(self)
 
-    def get_lista(self):
-        return AlunoDAO.listaAlunos()
+    def atualiza_student(self):
+        return AlunoDAO.update(self)
 
-    def atualiza_student(self, aluno_atualizado):
-        return AlunoDAO.update(aluno_atualizado)
+
