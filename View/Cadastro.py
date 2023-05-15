@@ -212,10 +212,21 @@ class Ui_RegisterWindow(object):
 
     def register(self):
         a = Aluno(
+            _id='',
             nome=self.txtName.displayText(),
             rg=self.txtRG.displayText(),
             cpf=self.txtCPF.displayText(),
             birthDate=str(self.dateEdit.dateTime().date().toPyDate()),
+            course=self.cbxCourse.currentText(),
+            campus=self.cbxCampus.currentText(),
+            cep=self.txtCEP.displayText().strip(),
+            address=self.txtAddress.displayText(),
+            address_complement=self.txtComplement.displayText(),
+            address_city=self.txtCity.displayText(),
+            address_number=self.txtNumber.displayText(),
+            face_id='',
+            phone=self.txtPhone.displayText()
+
         )
         a.phone = self.txtPhone.displayText()
         a.cep = self.txtCEP.displayText()
@@ -228,10 +239,8 @@ class Ui_RegisterWindow(object):
 
         a.face_id = self.get_faceId(a.nome)
 
-        if len(a.cep) > 8 and a.cep != 'CEP Inválido':# TODO colocar em um método/função
-            #a.insert_student()
+        if len(a.cep) > 8 and a.cep != 'CEP Inválido':  # TODO colocar em um método/função
             return QMessageBox.information(self.centralwidget, 'Sucesso', 'O Aluno foi inserido com sucesso!')
-            print(f'Aluno registrado com sucesso')
         else:
             return QMessageBox.warning(self.centralwidget, 'Aviso', 'Revise os dados do Aluno!')
 
@@ -240,6 +249,7 @@ class Ui_RegisterWindow(object):
             filename=aluno_nome + '.png'
         )
         return face.insert_face()
+
     def autoFillCep(self):
         if len(self.txtCEP.text()) == 11:
             cep = self.txtCEP.text().replace('-', '').replace(' ', '')
