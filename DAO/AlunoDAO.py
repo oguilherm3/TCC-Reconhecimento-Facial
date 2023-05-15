@@ -30,8 +30,8 @@ def listaAlunos():
 def update(aluno):
     try:
         collection = ConnectionFactory.getConnection('Aluno')
-        filtro = {"_id": aluno["_id"]}
-        att = {"$set": aluno}
+        filtro = {"_id": aluno._id}
+        att = {"$set": aluno.__dict__}
         collection.update_one(filtro, att)
         return True
     except Exception as e:
