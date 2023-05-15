@@ -29,6 +29,7 @@ class Ui_RegisterWindow(object):
     temp_path = path.replace('Images/RegisterProfilePhoto.png', 'Temp/temp_photo.png')
     cursos = Curso().get_lista()
     campi = Campus().get_lista()
+
     def setupUi(self, RegisterWindow):
 
         RegisterWindow.setObjectName("RegisterWindow")
