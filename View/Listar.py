@@ -12,20 +12,28 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QHeaderView, QTableWidgetItem, QPushButton, QMessageBox, QWidget, \
     QComboBox, QLineEdit
 import os
+# from Controller.ListarController import ListarController
 
 from Model.Campus import Campus
 from Model.Curso import Curso
 
 
-class Ui_MainWindow(object):
+class Ui_ListWindow(object):
+
+    def __init__(self, controller):
+        self.listar = QtWidgets.QMainWindow()
+        self.ui = Ui_ListWindow
+        self.ui.setupUi(self, self.listar)
+        self.controller = controller
+
     logo_path = os.getcwd().replace('View', 'Resources').replace('\\', '/') + '/Images/unip-logo.png'
     alunos = get_Alunos()
 
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.setFixedSize(1192, 727)
-        MainWindow.setStyleSheet('background-color: rgb(255, 255, 255);')
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+    def setupUi(self, ListWindow):
+        ListWindow.setObjectName("ListWindow")
+        ListWindow.setFixedSize(1192, 727)
+        ListWindow.setStyleSheet('background-color: rgb(255, 255, 255);')
+        self.centralwidget = QtWidgets.QWidget(ListWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.lblLogo = QtWidgets.QLabel(self.centralwidget)
         self.lblLogo.setGeometry(QtCore.QRect(-10, 0, 251, 91))
@@ -45,20 +53,20 @@ class Ui_MainWindow(object):
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
         self.monta_lista(self.tableWidget)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        ListWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(ListWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1192, 21))
         self.menubar.setObjectName("menubar")
         self.menuCadastrar = QtWidgets.QMenu(self.menubar)
         self.menuCadastrar.setObjectName("menuCadastrar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        ListWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(ListWindow)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        ListWindow.setStatusBar(self.statusbar)
         self.menubar.addAction(self.menuCadastrar.menuAction())
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi(ListWindow)
+        QtCore.QMetaObject.connectSlotsByName(ListWindow)
 
     def monta_lista(self, tabela):
 
@@ -108,19 +116,20 @@ class Ui_MainWindow(object):
         # Redimensionar colunas
         tabela.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, ListWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Listar"))
-        self.lblTitulo.setText(_translate("MainWindow", "Alunos"))
-        self.menuCadastrar.setTitle(_translate("MainWindow", "Cadastrar"))
+        ListWindow.setWindowTitle(_translate("ListWindow", "Listar"))
+        self.lblTitulo.setText(_translate("ListWindow", "Alunos"))
+        self.menuCadastrar.setTitle(_translate("ListWindow", "Cadastrar"))
 
     def editaAluno(self):
+        idx = self.tableWidget.currentRow()
+        aluno = self.alunos[idx]
 
-        print('Editar aluno clicado')
+        self.controller.openEditScreen(aluno)
 
     def atualiza_Aluno(self):
         idx = self.tableWidget.currentRow()
-        filtro = self.alunos[idx].get("_id")
         aluno = self.alunos[idx]
 
         aluno['nome'] = self.tableWidget.item(idx, 0).text()
@@ -138,15 +147,15 @@ class Ui_MainWindow(object):
     def atualiza_lista(self):
         pass
 
-def main():
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    ListarWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(ListarWindow)
-    ListarWindow.show()
-    sys.exit(app.exec_())
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     ListarWindow = QtWidgets.QMainWindow()
+#     ui = Ui_MainWindow()
+#     ui.setupUi(ListarWindow)
+#     ListarWindow.show()
+#     sys.exit(app.exec_())
+#
+#
+# if __name__ == "__main__":
+#     main()

@@ -23,7 +23,14 @@ from Model.Campus import Campus
 from Model.Face import Face
 
 
-class Ui_RegisterWindow(object):
+class Ui_EditWindow(object):
+
+    def __init__(self, controller):
+        self.editar = QtWidgets.QMainWindow()
+        self.ui = Ui_EditWindow
+        self.ui.setupUi(self, self.editar)
+        self.controller = controller
+
     if os.getcwd().__contains__('View'):
         cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
     else:
@@ -33,13 +40,13 @@ class Ui_RegisterWindow(object):
     cursos = Curso().get_lista()
     campi = Campus().get_lista()
 
-    def setupUi(self, RegisterWindow):
+    def setupUi(self, EditWindow):
 
-        RegisterWindow.setObjectName("RegisterWindow")
-        RegisterWindow.setFixedSize(1045, 633)
-        # RegisterWindow.setMenuBar() TODO: Review!
-        RegisterWindow.setStyleSheet('background-color: rgb(255, 255, 255);')
-        self.centralwidget = QtWidgets.QWidget(RegisterWindow)
+        EditWindow.setObjectName("EditWindow")
+        EditWindow.setFixedSize(1045, 633)
+        # EditWindow.setMenuBar() TODO: Review!
+        EditWindow.setStyleSheet('background-color: rgb(255, 255, 255);')
+        self.centralwidget = QtWidgets.QWidget(EditWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frRegister = QtWidgets.QFrame(self.centralwidget)
         self.frRegister.setGeometry(QtCore.QRect(70, 70, 451, 451))
@@ -80,13 +87,11 @@ class Ui_RegisterWindow(object):
         self.dateEdit = QtWidgets.QDateEdit(self.frRegister)
         self.dateEdit.setGeometry(QtCore.QRect(220, 190, 110, 22))
         self.dateEdit.setObjectName("dateEdit")
-        self.dateEdit.setCalendarPopup(True)
         self.dateEdit.setDate(date.fromisoformat("1900-01-01"))
         self.dateEdit.setMaximumDate(date.today())
         self.cbxUF = QtWidgets.QComboBox(self.frRegister)
         self.cbxUF.setGeometry(QtCore.QRect(360, 240, 61, 22))
         self.cbxUF.setObjectName("cbxUF")
-        self.cbxUF.setDisabled(True)
         self.lblUF = QtWidgets.QLabel(self.frRegister)
         self.lblUF.setGeometry(QtCore.QRect(360, 220, 61, 16))
         self.lblUF.setObjectName("lblUF")
@@ -179,31 +184,11 @@ class Ui_RegisterWindow(object):
         self.btnRegister = QtWidgets.QPushButton(self.centralwidget)
         self.btnRegister.setGeometry(QtCore.QRect(470, 550, 91, 41))
         self.btnRegister.setObjectName("btnRegister")
-        self.btnRegister.clicked.connect(self.register)
-        RegisterWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(RegisterWindow)
-        self.statusbar.setEnabled(True)
-        self.statusbar.setObjectName("statusbar")
-        RegisterWindow.setStatusBar(self.statusbar)
-        self.menuBar = QtWidgets.QMenuBar(RegisterWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1045, 21))
-        self.menuBar.setObjectName("menuBar")
-        self.menuCadastro = QtWidgets.QMenu(self.menuBar)
-        self.menuCadastro.setObjectName("menuCadastro")
-        self.menuConsultar = QtWidgets.QMenu(self.menuBar)
-        self.menuConsultar.setObjectName("menuConsultar")
-        RegisterWindow.setMenuBar(self.menuBar)
-        self.actionAlunoCadastro = QtWidgets.QAction(RegisterWindow)
-        self.actionAlunoCadastro.setObjectName("actionAlunoCadastro")
-        self.actionListarAlunos = QtWidgets.QAction(RegisterWindow)
-        self.actionListarAlunos.setObjectName("actionListarAlunos")
-        self.menuCadastro.addAction(self.actionAlunoCadastro)
-        self.menuConsultar.addAction(self.actionListarAlunos)
-        self.menuBar.addAction(self.menuCadastro.menuAction())
-        self.menuBar.addAction(self.menuConsultar.menuAction())
+        self.btnRegister.clicked.connect(self.edit)
+        EditWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(RegisterWindow)
-        QtCore.QMetaObject.connectSlotsByName(RegisterWindow)
+        self.retranslateUi(EditWindow)
+        QtCore.QMetaObject.connectSlotsByName(EditWindow)
 
     def takePicture(self):
         img = takePicture.capture()
@@ -214,7 +199,7 @@ class Ui_RegisterWindow(object):
     def update(self):
         self.label.setStyleSheet("image: url(" + self.temp_path + ");")
 
-    def register(self):
+    def edit(self):
         a = Aluno(
             _id='',
             nome=self.txtName.displayText(),
@@ -230,7 +215,6 @@ class Ui_RegisterWindow(object):
             address_number=self.txtNumber.displayText(),
             face_id='',
             phone=self.txtPhone.displayText()
-
         )
         a.face_id = self.get_faceId(a.nome)
 
@@ -244,6 +228,20 @@ class Ui_RegisterWindow(object):
             filename=aluno_nome + '.png'
         )
         return face.insert_face()
+
+    def autoFillAluno(self, aluno):
+        self.txtName.setText(aluno['nome'])
+        self.txtRG.setText(aluno['rg'])
+        self.txtCPF.setText(aluno['cpf'])
+        # birthDate  str(self.dateEdit.dateTime().date().toPyDate()),
+        self.cbxCourse.setCurrentText(aluno['course'])
+        self.cbxCampus.setCurrentText(aluno['campus'])
+        self.txtCEP.setText(aluno['cep'])
+        self.txtAddress.setText(aluno['address'])
+        self.txtComplement.setText(aluno['address_complement'])
+        self.txtCity.setText(aluno['address_city'])
+        self.txtNumber.setText(aluno['address_number'])
+        self.txtPhone.setText(aluno['phone'])
 
     def autoFillCep(self):
         if len(self.txtCEP.text()) == 11:
@@ -259,43 +257,36 @@ class Ui_RegisterWindow(object):
             else:
                 self.txtAddress.setText('CEP Inválido')
 
-    def retranslateUi(self, RegisterWindow):
+    def retranslateUi(self, EditWindow):
         _translate = QtCore.QCoreApplication.translate
-        RegisterWindow.setWindowTitle(_translate("RegisterWindow", "Cadastrar"))
-        self.lblName.setText(_translate("RegisterWindow", "Nome: "))
-        self.lblRG.setText(_translate("RegisterWindow", "RG:"))
-        self.lblCPF.setText(_translate("RegisterWindow", "CPF: "))
-        self.lblPhone.setText(_translate("RegisterWindow", "Telefone: "))
-        self.lblBirthDate.setText(_translate("RegisterWindow", "Data de Nascimento: "))
-        self.lblUF.setText(_translate("RegisterWindow", "UF"))
-        self.lblCEP.setText(_translate("RegisterWindow", "CEP"))
-        self.lblComplement.setText(_translate("RegisterWindow", "Complemento"))
-        self.lblAddress.setText(_translate("RegisterWindow", "Endereço: "))
-        self.rdbStudent.setText(_translate("RegisterWindow", "Aluno"))
-        self.rdnEmployee.setText(_translate("RegisterWindow", "Funcionário"))
-        self.lblNumber.setText(_translate("RegisterWindow", "Número: "))
-        self.lblCity.setText(_translate("RegisterWindow", "Cidade:"))
-        self.lblCourse.setText(_translate("RegisterWindow", "Curso: "))
-        self.lblCampus.setText(_translate("RegisterWindow", "Unidade: "))
-        self.btnPicture.setText(_translate("RegisterWindow", "Tirar Foto"))
-        self.btnRegister.setText(_translate("RegisterWindow", "Cadastrar"))
-        self.menuCadastro.setTitle(_translate("RegisterWindow", "Cadastrar"))
-        self.menuConsultar.setTitle(_translate("RegisterWindow", "Listar"))
-        self.actionAlunoCadastro.setText(_translate("RegisterWindow", "Aluno"))
-        self.actionListarAlunos.setText(_translate("RegisterWindow", "Alunos"))
+        EditWindow.setWindowTitle(_translate("EditWindow", "Editar"))
+        self.lblName.setText(_translate("EditWindow", "Nome: "))
+        self.lblRG.setText(_translate("EditWindow", "RG:"))
+        self.lblCPF.setText(_translate("EditWindow", "CPF: "))
+        self.lblPhone.setText(_translate("EditWindow", "Telefone: "))
+        self.lblBirthDate.setText(_translate("EditWindow", "Data de Nascimento: "))
+        self.lblUF.setText(_translate("EditWindow", "UF"))
+        self.lblCEP.setText(_translate("EditWindow", "CEP"))
+        self.lblComplement.setText(_translate("EditWindow", "Complemento"))
+        self.lblAddress.setText(_translate("EditWindow", "Endereço: "))
+        self.rdbStudent.setText(_translate("EditWindow", "Aluno"))
+        self.rdnEmployee.setText(_translate("EditWindow", "Funcionário"))
+        self.lblNumber.setText(_translate("EditWindow", "Número: "))
+        self.lblCity.setText(_translate("EditWindow", "Cidade:"))
+        self.lblCourse.setText(_translate("EditWindow", "Curso: "))
+        self.lblCampus.setText(_translate("EditWindow", "Unidade: "))
+        self.btnPicture.setText(_translate("EditWindow", "Tirar Foto"))
+        self.btnRegister.setText(_translate("EditWindow", "Cadastrar"))
 
 
-# import img_rc
-
-def main():
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    RegisterWindow = QtWidgets.QMainWindow()
-    ui = Ui_RegisterWindow()
-    ui.setupUi(RegisterWindow)
-    RegisterWindow.show()
-    sys.exit(app.exec_())
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     EditWindow = QtWidgets.QMainWindow()
+#     ui = Ui_EditWindow()
+#     ui.setupUi(EditWindow)
+#     EditWindow.show()
+#
+#
+# if __name__ == "__main__":
+#     main()
