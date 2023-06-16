@@ -13,7 +13,8 @@ class ListarController:
         self.telaPrincipal.listar.show()
 
     def openEditScreen(self, aluno):
-        self.telaSecundaria.ui.autoFillAluno(self.telaSecundaria, aluno)
+        self.telaSecundaria.aluno = aluno
+        self.telaSecundaria.ui.autoFillAluno(self.telaSecundaria, self.telaSecundaria.aluno)
         self.telaSecundaria.editar.show()
 
     def run(self):

@@ -5,9 +5,10 @@ def insert(aluno):
     try:
         collection = ConnectionFactory.getConnection('Aluno')
         collection.insert_one(aluno.__dict__)
+        return True
     except Exception as e:
         print('Error in Aluno insert: ', e)
-
+        return False
 
 def insert_getId(aluno):
     try:
@@ -30,7 +31,7 @@ def listaAlunos():
 def update(aluno):
     try:
         collection = ConnectionFactory.getConnection('Aluno')
-        filtro = {"_id": aluno._id}
+        filtro = {"cpf": aluno.cpf}
         att = {"$set": aluno.__dict__}
         collection.update_one(filtro, att)
         return True

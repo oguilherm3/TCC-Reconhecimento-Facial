@@ -26,9 +26,8 @@ class Ui_ListWindow(object):
         self.ui.setupUi(self, self.listar)
         self.controller = controller
 
-    logo_path = os.getcwd().replace('View', 'Resources').replace('\\', '/') + '/Images/unip-logo.png'
-    alunos = get_Alunos()
-
+    logo_path = os.getcwd().replace('Controller', 'Resources').replace('\\', '/') + '/Images/unip-logo.png'
+    #alunos = dict
     def setupUi(self, ListWindow):
         ListWindow.setObjectName("ListWindow")
         ListWindow.setFixedSize(1192, 727)
@@ -42,6 +41,10 @@ class Ui_ListWindow(object):
         self.lblLogo.setObjectName("lblLogo")
         self.lblTitulo = QtWidgets.QLabel(self.centralwidget)
         self.lblTitulo.setGeometry(QtCore.QRect(510, 20, 151, 51))
+        self.btnRefreshTable = QtWidgets.QPushButton(self.centralwidget)
+        self.btnRefreshTable.setGeometry(QtCore.QRect(1090, 90, 75, 23))
+        self.btnRefreshTable.setObjectName("btnRegister")
+        self.btnRefreshTable.clicked.connect(self.monta_lista)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(36)
@@ -52,7 +55,8 @@ class Ui_ListWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
-        self.monta_lista(self.tableWidget)
+        self.alunos = get_Alunos()
+        self.monta_lista()
         ListWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ListWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1192, 21))
@@ -68,8 +72,10 @@ class Ui_ListWindow(object):
         self.retranslateUi(ListWindow)
         QtCore.QMetaObject.connectSlotsByName(ListWindow)
 
-    def monta_lista(self, tabela):
+    def monta_lista(self):
 
+        self.alunos = get_Alunos()
+        tabela = self.tableWidget
         # Dimensionando a tabela
         tabela.setColumnCount(6)
         tabela.setRowCount(len(self.alunos))
@@ -103,7 +109,7 @@ class Ui_ListWindow(object):
             btnAtualizar.clicked.connect(self.atualiza_Aluno)
 
             btnEditar = QPushButton('Editar')
-            btnEditar.clicked.connect(self.editaAluno)
+            btnEditar.clicked.connect(self.editar_screen)
             item_editar = btnEditar
 
             tabela.setItem(row_idx, 0, item_name)
@@ -121,8 +127,9 @@ class Ui_ListWindow(object):
         ListWindow.setWindowTitle(_translate("ListWindow", "Listar"))
         self.lblTitulo.setText(_translate("ListWindow", "Alunos"))
         self.menuCadastrar.setTitle(_translate("ListWindow", "Cadastrar"))
+        self.btnRefreshTable.setText(_translate("ListWindow", "Refresh"))
 
-    def editaAluno(self):
+    def editar_screen(self):
         idx = self.tableWidget.currentRow()
         aluno = self.alunos[idx]
 
@@ -132,12 +139,16 @@ class Ui_ListWindow(object):
         idx = self.tableWidget.currentRow()
         aluno = self.alunos[idx]
 
-        aluno['nome'] = self.tableWidget.item(idx, 0).text()
-        aluno['course'] = self.tableWidget.cellWidget(idx, 1).currentText()
-        aluno['campus'] = self.tableWidget.cellWidget(idx, 2).currentText()
-        aluno['phone'] = self.tableWidget.cellWidget(idx, 3).displayText()
+        nome = self.tableWidget.item(idx, 0).text()
+        course = self.tableWidget.cellWidget(idx, 1).currentText()
+        campus = self.tableWidget.cellWidget(idx, 2).currentText()
+        phone = self.tableWidget.cellWidget(idx, 3).displayText()
 
-        resultado = Aluno.atualiza_student(Aluno(**aluno))
+        a = Aluno(nome, aluno['rg'], aluno['cpf'], aluno['birthDate'], course, campus, aluno['cep'],
+                  aluno['address'], aluno['address_complement'], aluno['address_number'], aluno['address_city'], aluno['address_uf'],
+                  aluno['face_id'], aluno['phone'])
+
+        resultado = a.atualiza_student()
 
         if resultado:
             return QMessageBox.information(self.centralwidget, 'Sucesso', 'O Aluno foi atualizado com sucesso!')

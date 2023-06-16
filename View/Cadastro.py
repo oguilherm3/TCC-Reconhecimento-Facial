@@ -216,7 +216,6 @@ class Ui_RegisterWindow(object):
 
     def register(self):
         a = Aluno(
-            _id='',
             nome=self.txtName.displayText(),
             rg=self.txtRG.displayText(),
             cpf=self.txtCPF.displayText(),
@@ -232,12 +231,21 @@ class Ui_RegisterWindow(object):
             phone=self.txtPhone.displayText()
 
         )
-        a.face_id = self.get_faceId(a.nome)
 
-        if len(a.cep) > 8 and a.cep != 'CEP Inválido':  # TODO colocar em um método/função
+        a.face_id = self.get_faceId(a.nome)
+        resultado = a.insert_student()
+
+        if resultado:  # TODO colocar em um método/função
             return QMessageBox.information(self.centralwidget, 'Sucesso', 'O Aluno foi inserido com sucesso!')
         else:
             return QMessageBox.warning(self.centralwidget, 'Aviso', 'Revise os dados do Aluno!')
+
+    def verificaCep(self, cep):
+        if not (len(cep) > 8 and cep != 'CEP Inválido'):
+            self.btnRegister.setEnabled(False)
+            return QMessageBox.warning(self.centralwidget, 'Aviso', 'CEP Inválido!')
+        else:
+            self.btnRegister.setEnabled(True)
 
     def get_faceId(self, aluno_nome):
         face = Face(

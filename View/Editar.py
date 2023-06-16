@@ -30,6 +30,7 @@ class Ui_EditWindow(object):
         self.ui = Ui_EditWindow
         self.ui.setupUi(self, self.editar)
         self.controller = controller
+        self.aluno = Aluno('', '', '', '', '', '', '', '', '', '', '', '', '', '')
 
     if os.getcwd().__contains__('View'):
         cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
@@ -92,6 +93,7 @@ class Ui_EditWindow(object):
         self.cbxUF = QtWidgets.QComboBox(self.frRegister)
         self.cbxUF.setGeometry(QtCore.QRect(360, 240, 61, 22))
         self.cbxUF.setObjectName("cbxUF")
+        self.cbxUF.setEnabled(False)
         self.lblUF = QtWidgets.QLabel(self.frRegister)
         self.lblUF.setGeometry(QtCore.QRect(360, 220, 61, 16))
         self.lblUF.setObjectName("lblUF")
@@ -181,10 +183,10 @@ class Ui_EditWindow(object):
         self.btnPicture.setObjectName("btnPicture")
         self.btnPicture.clicked.connect(self.takePicture)
         self.verticalLayout.addWidget(self.btnPicture)
-        self.btnRegister = QtWidgets.QPushButton(self.centralwidget)
-        self.btnRegister.setGeometry(QtCore.QRect(470, 550, 91, 41))
-        self.btnRegister.setObjectName("btnRegister")
-        self.btnRegister.clicked.connect(self.edit)
+        self.btnEdit = QtWidgets.QPushButton(self.centralwidget)
+        self.btnEdit.setGeometry(QtCore.QRect(470, 550, 91, 41))
+        self.btnEdit.setObjectName("btnRegister")
+        self.btnEdit.clicked.connect(self.edit)
         EditWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(EditWindow)
@@ -200,26 +202,35 @@ class Ui_EditWindow(object):
         self.label.setStyleSheet("image: url(" + self.temp_path + ");")
 
     def edit(self):
-        a = Aluno(
-            _id='',
-            nome=self.txtName.displayText(),
-            rg=self.txtRG.displayText(),
-            cpf=self.txtCPF.displayText(),
-            birthDate=str(self.dateEdit.dateTime().date().toPyDate()),
-            course=self.cbxCourse.currentText(),
-            campus=self.cbxCampus.currentText(),
-            cep=self.txtCEP.displayText().strip(),
-            address=self.txtAddress.displayText(),
-            address_complement=self.txtComplement.displayText(),
-            address_city=self.txtCity.displayText(),
-            address_number=self.txtNumber.displayText(),
-            face_id='',
-            phone=self.txtPhone.displayText()
-        )
-        a.face_id = self.get_faceId(a.nome)
 
-        if len(a.cep) > 8 and a.cep != 'CEP Inválido':  # TODO colocar em um método/função
-            return QMessageBox.information(self.centralwidget, 'Sucesso', 'O Aluno foi inserido com sucesso!')
+        nome = self.txtName.text()
+        rg = self.txtRG.text()
+        cpf = self.txtCPF.text()
+        birthDate = str(self.dateEdit.dateTime().date().toPyDate())
+        course = self.cbxCourse.currentText()
+        campus = self.cbxCampus.currentText()
+        cep = self.txtCEP.displayText().strip()
+        address = self.txtAddress.displayText()
+        address_complement = self.txtComplement.displayText()
+        address_city = self.txtCity.displayText()
+        address_number = self.txtNumber.displayText()
+        address_uf = self.cbxUF.currentText()
+        phone = self.txtPhone.displayText()
+        face_id = self.aluno['face_id']
+
+        a = Aluno(nome, rg, cpf, birthDate, course, campus, cep,
+                  address, address_complement, address_number, address_city, address_uf,
+                  face_id, phone)
+
+        self.verificaCep(cep)
+
+        if self.btnEdit.isEnabled():
+            resultado = a.atualiza_student()
+        else:
+            resultado = False
+
+        if resultado:
+            return QMessageBox.information(self.centralwidget, 'Sucesso', 'O Aluno foi atualizado com sucesso!')
         else:
             return QMessageBox.warning(self.centralwidget, 'Aviso', 'Revise os dados do Aluno!')
 
@@ -230,10 +241,11 @@ class Ui_EditWindow(object):
         return face.insert_face()
 
     def autoFillAluno(self, aluno):
+        self.aluno = aluno
         self.txtName.setText(aluno['nome'])
         self.txtRG.setText(aluno['rg'])
         self.txtCPF.setText(aluno['cpf'])
-        # birthDate  str(self.dateEdit.dateTime().date().toPyDate()),
+        self.dateEdit.setDate(date.fromisoformat(aluno['birthDate'])),
         self.cbxCourse.setCurrentText(aluno['course'])
         self.cbxCampus.setCurrentText(aluno['campus'])
         self.txtCEP.setText(aluno['cep'])
@@ -241,6 +253,7 @@ class Ui_EditWindow(object):
         self.txtComplement.setText(aluno['address_complement'])
         self.txtCity.setText(aluno['address_city'])
         self.txtNumber.setText(aluno['address_number'])
+        self.cbxUF.addItem(aluno['address_uf'])
         self.txtPhone.setText(aluno['phone'])
 
     def autoFillCep(self):
@@ -256,6 +269,13 @@ class Ui_EditWindow(object):
                 self.txtCity.setText(cidade)
             else:
                 self.txtAddress.setText('CEP Inválido')
+
+    def verificaCep(self, cep):
+        if not (len(cep) < 12 and cep != 'CEP Inválido'):
+            self.btnEdit.setEnabled(False)
+            return QMessageBox.warning(self.centralwidget, 'Aviso', 'CEP Inválido!')
+        else:
+            self.btnEdit.setEnabled(True)
 
     def retranslateUi(self, EditWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -276,8 +296,7 @@ class Ui_EditWindow(object):
         self.lblCourse.setText(_translate("EditWindow", "Curso: "))
         self.lblCampus.setText(_translate("EditWindow", "Unidade: "))
         self.btnPicture.setText(_translate("EditWindow", "Tirar Foto"))
-        self.btnRegister.setText(_translate("EditWindow", "Cadastrar"))
-
+        self.btnEdit.setText(_translate("EditWindow", "Atualizar"))
 
 # def main():
 #     import sys
