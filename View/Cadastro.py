@@ -233,9 +233,9 @@ class Ui_RegisterWindow(object):
             address_complement=self.txtComplement.displayText(),
             address_city=self.txtCity.displayText(),
             address_number=self.txtNumber.displayText(),
+            address_uf=self.cbxUF.currentText(),
             face_id='',
             phone=self.txtPhone.displayText()
-
         )
 
         a.face_id = self.get_faceId(a.nome)

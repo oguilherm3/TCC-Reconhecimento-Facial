@@ -66,8 +66,12 @@ class Ui_ListWindow(object):
         ListWindow.setMenuBar(self.menubar)
         self.actionAlunoCadastro = QtWidgets.QAction(ListWindow)
         self.actionAlunoCadastro.setObjectName("actionAlunoCadastro")
+        self.actionFuncionarioCadastro = QtWidgets.QAction(ListWindow)
+        self.actionFuncionarioCadastro.setObjectName("actionFuncionarioCadastro")
+        self.actionFuncionarioCadastro.setEnabled(False)
         self.actionAlunoCadastro.triggered.connect(self.cadastrar_screen)
         self.menuCadastrar.addAction(self.actionAlunoCadastro)
+        self.menuCadastrar.addAction(self.actionFuncionarioCadastro)
         self.menubar.addAction(self.menuCadastrar.menuAction())
 
         self.retranslateUi(ListWindow)
@@ -129,6 +133,7 @@ class Ui_ListWindow(object):
         self.lblTitulo.setText(_translate("ListWindow", "Alunos"))
         self.menuCadastrar.setTitle(_translate("ListWindow", "Cadastrar"))
         self.actionAlunoCadastro.setText(_translate("RegisterWindow", "Aluno"))
+        self.actionFuncionarioCadastro.setText(_translate("RegisterWindow", "Funcionário"))
         self.btnRefreshTable.setText(_translate("ListWindow", "Refresh"))
 
     def editar_screen(self):
