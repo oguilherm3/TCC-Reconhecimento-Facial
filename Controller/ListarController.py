@@ -1,3 +1,5 @@
+import os
+
 from View import Editar
 from View.Cadastro import Ui_RegisterWindow
 from View.Editar import Ui_EditWindow
@@ -20,6 +22,9 @@ class ListarController:
         self.telaSecundaria.editar.show()
 
     def openCadastroScreen(self):
+        cur = os.getcwd().replace('Controller', 'Resources')
+        path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
+        self.telaCadastro.label.setStyleSheet("image: url(" + path + ");")
         self.telaCadastro.cadastrar.show()
     def editarAluno(self):
         pass

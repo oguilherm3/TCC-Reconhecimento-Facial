@@ -30,12 +30,6 @@ class Ui_RegisterWindow(object):
         self.ui.setupUi(self, self.cadastrar)
         self.controller = controller
 
-    if os.getcwd().__contains__('View'):
-        cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
-    else:
-        cur = os.getcwd().replace('Controller', 'Resources')
-    path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
-    temp_path = path.replace('Images/RegisterProfilePhoto.png', 'Temp/temp_photo.png')
     cursos = Curso().get_lista()
     campi = Campus().get_lista()
 
@@ -148,7 +142,7 @@ class Ui_RegisterWindow(object):
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(20, 10, 421, 330))
-        self.label.setStyleSheet("image: url(" + self.path + ");")
+        # self.label.setStyleSheet("image: url(" + self.path + ");")
         self.label.setText("")
         self.label.setObjectName("label")
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
@@ -301,15 +295,15 @@ class Ui_RegisterWindow(object):
 
 # import img_rc
 
-def main():
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    RegisterWindow = QtWidgets.QMainWindow()
-    ui = Ui_RegisterWindow()
-    ui.setupUi(RegisterWindow)
-    RegisterWindow.show()
-    sys.exit(app.exec_())
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     RegisterWindow = QtWidgets.QMainWindow()
+#     ui = Ui_RegisterWindow()
+#     ui.setupUi(RegisterWindow)
+#     RegisterWindow.show()
+#     sys.exit(app.exec_())
+#
+#
+# if __name__ == "__main__":
+#     main()
