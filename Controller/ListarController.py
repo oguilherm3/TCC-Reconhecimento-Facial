@@ -1,4 +1,5 @@
 from View import Editar
+from View.Cadastro import Ui_RegisterWindow
 from View.Editar import Ui_EditWindow
 from View.Listar import Ui_ListWindow
 from PyQt5 import QtWidgets
@@ -10,12 +11,18 @@ class ListarController:
         self.app = QtWidgets.QApplication(sys.argv)
         self.telaPrincipal = Ui_ListWindow(self)
         self.telaSecundaria = Ui_EditWindow(self)
+        self.telaCadastro = Ui_RegisterWindow(self)
         self.telaPrincipal.listar.show()
 
     def openEditScreen(self, aluno):
         self.telaSecundaria.aluno = aluno
         self.telaSecundaria.ui.autoFillAluno(self.telaSecundaria, self.telaSecundaria.aluno)
         self.telaSecundaria.editar.show()
+
+    def openCadastroScreen(self):
+        self.telaCadastro.cadastrar.show()
+    def editarAluno(self):
+        pass
 
     def run(self):
         sys.exit(self.app.exec_())

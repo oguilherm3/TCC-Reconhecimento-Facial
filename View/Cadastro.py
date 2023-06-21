@@ -24,6 +24,12 @@ from Model.Face import Face
 
 
 class Ui_RegisterWindow(object):
+    def __init__(self, controller):
+        self.cadastrar = QtWidgets.QMainWindow()
+        self.ui = Ui_RegisterWindow
+        self.ui.setupUi(self, self.cadastrar)
+        self.controller = controller
+
     if os.getcwd().__contains__('View'):
         cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
     else:
@@ -287,10 +293,10 @@ class Ui_RegisterWindow(object):
         self.lblCampus.setText(_translate("RegisterWindow", "Unidade: "))
         self.btnPicture.setText(_translate("RegisterWindow", "Tirar Foto"))
         self.btnRegister.setText(_translate("RegisterWindow", "Cadastrar"))
-        self.menuCadastro.setTitle(_translate("RegisterWindow", "Cadastrar"))
-        self.menuConsultar.setTitle(_translate("RegisterWindow", "Listar"))
-        self.actionAlunoCadastro.setText(_translate("RegisterWindow", "Aluno"))
-        self.actionListarAlunos.setText(_translate("RegisterWindow", "Alunos"))
+        # self.menuCadastro.setTitle(_translate("RegisterWindow", "Cadastrar"))
+        # self.menuConsultar.setTitle(_translate("RegisterWindow", "Listar"))
+        # self.actionAlunoCadastro.setText(_translate("RegisterWindow", "Aluno"))
+        # self.actionListarAlunos.setText(_translate("RegisterWindow", "Alunos"))
 
 
 # import img_rc
