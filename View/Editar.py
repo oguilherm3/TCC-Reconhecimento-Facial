@@ -37,6 +37,7 @@ class Ui_EditWindow(object):
     else:
         cur = os.getcwd().replace('Controller', 'Resources')
     path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
+    temp_path = path.replace('/Images/RegisterProfilePhoto.png', '/Temp/temp_photo.png')
 
     cursos = Curso().get_lista()
     campi = Campus().get_lista()

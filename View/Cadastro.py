@@ -30,6 +30,14 @@ class Ui_RegisterWindow(object):
         self.ui.setupUi(self, self.cadastrar)
         self.controller = controller
 
+
+    if os.getcwd().__contains__('View'):
+        cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
+    else:
+        cur = os.getcwd().replace('Controller', 'Resources')
+    path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
+    temp_path = path.replace('/Images/RegisterProfilePhoto.png', '/Temp/temp_photo.png')
+
     cursos = Curso().get_lista()
     campi = Campus().get_lista()
 
