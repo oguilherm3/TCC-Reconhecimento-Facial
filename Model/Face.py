@@ -1,6 +1,10 @@
 from DAO import FaceDAO
 
 
+def get_face_by_id(file_id):
+    return FaceDAO.get_by_id(file_id)
+
+
 class Face:
     def __init__(self, filename):
         self.filename = filename

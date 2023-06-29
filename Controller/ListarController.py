@@ -1,11 +1,12 @@
 import os
 
+from Model import Face
 from View import Editar
 from View.Cadastro import Ui_RegisterWindow
 from View.Editar import Ui_EditWindow
 from View.Listar import Ui_ListWindow
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QMessageBox
 import sys
 
 class ListarController:
@@ -17,9 +18,17 @@ class ListarController:
         self.telaPrincipal.listar.show()
 
     def openEditScreen(self, aluno):
-        self.telaSecundaria.aluno = aluno
-        self.telaSecundaria.ui.autoFillAluno(self.telaSecundaria, self.telaSecundaria.aluno)
-        self.telaSecundaria.editar.show()
+        cur = os.getcwd().replace('Controller', 'Resources')
+        path = cur.replace('\\', '/') + '/Temp/temp_photo.png'
+        if aluno['face_id'] != '':
+            self.telaSecundaria.aluno = aluno
+            Face.get_face_by_id(aluno['face_id'])
+            self.telaSecundaria.label.setStyleSheet("image: url(" + path + ");")
+            self.telaSecundaria.ui.autoFillAluno(self.telaSecundaria, self.telaSecundaria.aluno)
+            self.telaSecundaria.editar.show()
+        else:
+            return QMessageBox.information(self.telaPrincipal.centralwidget, 'Falha', 'O Aluno não possui uma foto '
+                                                                                      'cadastrada')
 
     def openCadastroScreen(self):
         cur = os.getcwd().replace('Controller', 'Resources')

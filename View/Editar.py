@@ -37,7 +37,7 @@ class Ui_EditWindow(object):
     else:
         cur = os.getcwd().replace('Controller', 'Resources')
     path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
-    temp_path = path.replace('Images/RegisterProfilePhoto.png', 'Temp/temp_photo.png')
+
     cursos = Curso().get_lista()
     campi = Campus().get_lista()
 
@@ -149,7 +149,7 @@ class Ui_EditWindow(object):
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(20, 10, 421, 330))
-        self.label.setStyleSheet("image: url(" + self.path + ");")
+        # self.label.setStyleSheet("image: url(" + self.path + ");")
         self.label.setText("")
         self.label.setObjectName("label")
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
