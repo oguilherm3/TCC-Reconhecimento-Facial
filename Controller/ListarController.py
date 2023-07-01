@@ -27,8 +27,12 @@ class ListarController:
             self.telaSecundaria.ui.autoFillAluno(self.telaSecundaria, self.telaSecundaria.aluno)
             self.telaSecundaria.editar.show()
         else:
-            return QMessageBox.information(self.telaPrincipal.centralwidget, 'Falha', 'O Aluno não possui uma foto '
+            cur = os.getcwd().replace('Controller', 'Resources')
+            path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
+            self.telaSecundaria.label.setStyleSheet("image: url(" + path + ");")
+            QMessageBox.information(self.telaPrincipal.centralwidget, 'Aviso', 'O Aluno não possui uma foto '
                                                                                       'cadastrada')
+            self.telaSecundaria.editar.show()
 
     def openCadastroScreen(self):
         cur = os.getcwd().replace('Controller', 'Resources')
