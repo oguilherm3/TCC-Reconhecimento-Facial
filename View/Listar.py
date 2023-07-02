@@ -158,15 +158,7 @@ class Ui_ListWindow(object):
                   aluno['address'], aluno['address_complement'], aluno['address_number'], aluno['address_city'], aluno['address_uf'],
                   aluno['face_id'], aluno['phone'])
 
-        resultado = a.atualiza_student()
-
-        if resultado:
-            return QMessageBox.information(self.centralwidget, 'Sucesso', 'O Aluno foi atualizado com sucesso!')
-        else:
-            return QMessageBox.information(self.centralwidget, 'Falha', 'O Aluno não foi atualizado')
-
-    def atualiza_lista(self):
-        pass
+        self.controller.atualizarAluno(a, self.centralwidget)
 
 # def main():
 #     import sys

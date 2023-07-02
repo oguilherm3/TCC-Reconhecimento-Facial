@@ -9,6 +9,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 import sys
 
+
 class ListarController:
     def __init__(self):
         self.app = QtWidgets.QApplication(sys.argv)
@@ -31,7 +32,7 @@ class ListarController:
             path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
             self.telaSecundaria.label.setStyleSheet("image: url(" + path + ");")
             QMessageBox.information(self.telaPrincipal.centralwidget, 'Aviso', 'O Aluno não possui uma foto '
-                                                                                      'cadastrada')
+                                                                               'cadastrada')
             self.telaSecundaria.editar.show()
 
     def openCadastroScreen(self):
@@ -39,8 +40,15 @@ class ListarController:
         path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
         self.telaCadastro.label.setStyleSheet("image: url(" + path + ");")
         self.telaCadastro.cadastrar.show()
-    def editarAluno(self):
-        pass
+
+    def atualizarAluno(self, aluno, widget):
+
+        resultado = aluno.atualiza_student()
+
+        if resultado:
+            return QMessageBox.information(widget, 'Sucesso', 'O Aluno foi atualizado com sucesso!')
+        else:
+            return QMessageBox.information(widget, 'Falha', 'O Aluno não foi atualizado')
 
     def run(self):
         sys.exit(self.app.exec_())
