@@ -158,7 +158,7 @@ class Ui_ListWindow(object):
                   aluno['address'], aluno['address_complement'], aluno['address_number'], aluno['address_city'], aluno['address_uf'],
                   aluno['face_id'], aluno['phone'])
 
-        self.controller.atualizarAluno(a, self.centralwidget)
+        self.controller.atualizar(a, self.centralwidget)
 
 # def main():
 #     import sys

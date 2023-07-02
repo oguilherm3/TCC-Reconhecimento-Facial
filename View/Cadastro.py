@@ -224,29 +224,17 @@ class Ui_RegisterWindow(object):
 
     def register(self):
         a = Aluno(
-            nome=self.txtName.displayText(),
-            rg=self.txtRG.displayText(),
-            cpf=self.txtCPF.displayText(),
-            birthDate=str(self.dateEdit.dateTime().date().toPyDate()),
-            course=self.cbxCourse.currentText(),
-            campus=self.cbxCampus.currentText(),
-            cep=self.txtCEP.displayText().strip(),
-            address=self.txtAddress.displayText(),
-            address_complement=self.txtComplement.displayText(),
-            address_city=self.txtCity.displayText(),
-            address_number=self.txtNumber.displayText(),
-            address_uf=self.cbxUF.currentText(),
-            face_id='',
-            phone=self.txtPhone.displayText()
+            nome=self.txtName.displayText(), rg=self.txtRG.displayText(), cpf=self.txtCPF.displayText(),
+            birthDate=str(self.dateEdit.dateTime().date().toPyDate()), course=self.cbxCourse.currentText(),
+            campus=self.cbxCampus.currentText(), cep=self.txtCEP.displayText().strip(), address=self.txtAddress.displayText(),
+            address_complement=self.txtComplement.displayText(), address_city=self.txtCity.displayText(),
+            address_number=self.txtNumber.displayText(), address_uf=self.cbxUF.currentText(),
+            face_id='', phone=self.txtPhone.displayText()
         )
 
         a.face_id = self.get_faceId(a.nome)
-        resultado = a.insert_student()
 
-        if resultado:  # TODO colocar em um método/função
-            return QMessageBox.information(self.centralwidget, 'Sucesso', 'O Aluno foi inserido com sucesso!')
-        else:
-            return QMessageBox.warning(self.centralwidget, 'Aviso', 'Revise os dados do Aluno!')
+        self.controller.cadastrar(a, self.centralwidget)
 
     def verificaCep(self, cep):
         if not (len(cep) > 8 and cep != 'CEP Inválido'):
