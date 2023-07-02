@@ -17,14 +17,15 @@ class ListarController:
         self.telaSecundaria = Ui_EditWindow(self)
         self.telaCadastro = Ui_RegisterWindow(self)
         self.telaPrincipal.listar.show()
+        self._cur = os.getcwd().replace('Controller', 'Resources')
+        self.register_path = self._cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
+        self.temp_path = self._cur.replace('\\', '/') + '/Temp/temp_photo.png'
 
     def openEditScreen(self, aluno):
-        cur = os.getcwd().replace('Controller', 'Resources')
-        path = cur.replace('\\', '/') + '/Temp/temp_photo.png'
         if aluno['face_id'] != '':
             self.telaSecundaria.aluno = aluno
             Face.get_face_by_id(aluno['face_id'])
-            self.telaSecundaria.label.setStyleSheet("image: url(" + path + ");")
+            self.telaSecundaria.label.setStyleSheet("image: url(" + self.temp_path + ");")
             self.telaSecundaria.ui.autoFillAluno(self.telaSecundaria, self.telaSecundaria.aluno)
             self.telaSecundaria.editar.show()
         else:
@@ -36,9 +37,7 @@ class ListarController:
             self.telaSecundaria.editar.show()
 
     def openCadastroScreen(self):
-        cur = os.getcwd().replace('Controller', 'Resources')
-        path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
-        self.telaCadastro.label.setStyleSheet("image: url(" + path + ");")
+        self.telaCadastro.label.setStyleSheet("image: url(" + self.register_path + ");")
         self.telaCadastro.cadastrar.show()
 
     def atualizar(self, aluno, widget):

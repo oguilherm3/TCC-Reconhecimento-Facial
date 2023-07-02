@@ -30,14 +30,6 @@ class Ui_RegisterWindow(object):
         self.ui.setupUi(self, self.cadastrar)
         self.controller = controller
 
-
-    if os.getcwd().__contains__('View'):
-        cur = os.getcwd().replace('View', 'Resources')  # get current dir --> change to Resources
-    else:
-        cur = os.getcwd().replace('Controller', 'Resources')
-    path = cur.replace('\\', '/') + '/Images/RegisterProfilePhoto.png'
-    temp_path = path.replace('/Images/RegisterProfilePhoto.png', '/Temp/temp_photo.png')
-
     cursos = Curso().get_lista()
     campi = Campus().get_lista()
 
@@ -215,12 +207,12 @@ class Ui_RegisterWindow(object):
 
     def takePicture(self):
         img = takePicture.capture()
-        Image.fromarray(img).save(self.temp_path)
+        Image.fromarray(img).save(self.controller.temp_path)
 
-        self.update()
+        self.update_photo()
 
-    def update(self):
-        self.label.setStyleSheet("image: url(" + self.temp_path + ");")
+    def update_photo(self):
+        self.label.setStyleSheet("image: url(" + self.controller.temp_path + ");")
 
     def register(self):
         a = Aluno(
