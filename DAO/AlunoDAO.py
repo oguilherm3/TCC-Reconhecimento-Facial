@@ -10,6 +10,7 @@ def insert(aluno):
         print('Error in Aluno insert: ', e)
         return False
 
+
 def insert_getId(aluno):
     try:
         collection = ConnectionFactory.getConnection('Aluno')
@@ -37,4 +38,15 @@ def update(aluno):
         return True
     except Exception as e:
         print('Error in update Aluno: ', e)
+        return False
+
+
+def delete(aluno):
+    try:
+        collection = ConnectionFactory.getConnection('Aluno')
+        filtro = {"cpf": aluno.cpf}
+        collection.delete_one(filtro)
+        return True
+    except Exception as e:
+        print('Error in delete Aluno: ', e)
         return False

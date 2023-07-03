@@ -19,6 +19,19 @@ def insert(face):
         print('Error in mongo insert: ', e)
 
 
+def delete_by_id(file_id):
+    try:
+        db = ConnectionFactory.getDatabase('TCC')
+        fs = gridfs.GridFS(db, "Face")
+
+        fs.delete(file_id)
+        return True
+
+    except Exception as e:
+        print('Error in mongo delete (Face): ', e)
+        return False
+
+
 def get_by_id(file_id):
     cur = os.getcwd().replace('Controller', 'Resources')
     path = cur.replace('\\', '/') + '/Temp/temp_photo.png'
@@ -38,4 +51,3 @@ def get_by_id(file_id):
         return 'Success'
     except Exception as e:
         print('Error in mongo insert: ', e)
-

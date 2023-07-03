@@ -36,4 +36,7 @@ class Aluno(Pessoa):
     def atualiza_student(self):
         return AlunoDAO.update(self)
 
+    def delete_student(self):
+        return AlunoDAO.delete(self)
+
 

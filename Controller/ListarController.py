@@ -58,8 +58,23 @@ class ListarController:
         else:
             return QMessageBox.information(widget, 'Falha', 'Não foi possível cadastrar o Aluno')
 
+    def deletar(self, aluno, widget):
 
+        resposta = QMessageBox.question(widget, 'Alerta!', f'Deseja continuar mesmo deletar o aluno: {aluno.nome}?',
+                                        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
+        if resposta == QMessageBox.Yes:
+
+            resultado_face = Face.delete_face_by_id(aluno.face_id)
+            resultado_aluno = aluno.delete_student()
+
+            if resultado_face and resultado_aluno:
+                QMessageBox.information(widget, 'Sucesso', 'O Aluno foi deletado com sucesso!')
+                return self.telaPrincipal.monta_lista()
+            else:
+                return QMessageBox.information(widget, 'Falha', 'Houve um problema na deleção')
+        else:
+            pass
 
     def run(self):
         sys.exit(self.app.exec_())

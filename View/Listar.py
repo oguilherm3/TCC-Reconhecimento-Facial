@@ -82,7 +82,7 @@ class Ui_ListWindow(object):
         self.alunos = get_Alunos()
         tabela = self.tableWidget
         # Dimensionando a tabela
-        tabela.setColumnCount(6)
+        tabela.setColumnCount(7)
         tabela.setRowCount(len(self.alunos))
 
         # Opções das combo boxes
@@ -90,7 +90,7 @@ class Ui_ListWindow(object):
         campi = Campus().get_lista()
 
         # Definir cabeçalho da tabela
-        tabela.setHorizontalHeaderLabels(['Nome', 'Curso', 'Campus', 'Telefone', '', ''])
+        tabela.setHorizontalHeaderLabels(['Nome', 'Curso', 'Campus', 'Telefone', '', '', ''])
 
         # Adicionar os dados à tabela
         for row_idx, row_data in enumerate(self.alunos):
@@ -117,12 +117,17 @@ class Ui_ListWindow(object):
             btnEditar.clicked.connect(self.editar_screen)
             item_editar = btnEditar
 
+            btnDeletar = QPushButton('Deletar')
+            btnDeletar.clicked.connect(self.deleta_Aluno)
+            item_deletar = btnDeletar
+
             tabela.setItem(row_idx, 0, item_name)
             tabela.setCellWidget(row_idx, 1, item_course)
             tabela.setCellWidget(row_idx, 2, item_campus)
             tabela.setCellWidget(row_idx, 3, item_phone)
             tabela.setCellWidget(row_idx, 4, btnAtualizar)
             tabela.setCellWidget(row_idx, 5, item_editar)
+            tabela.setCellWidget(row_idx, 6, item_deletar)
 
         # Redimensionar colunas
         tabela.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -159,6 +164,21 @@ class Ui_ListWindow(object):
                   aluno['face_id'], aluno['phone'])
 
         self.controller.atualizar(a, self.centralwidget)
+
+    def deleta_Aluno(self):
+        idx = self.tableWidget.currentRow()
+        aluno = self.alunos[idx]
+
+        nome = self.tableWidget.item(idx, 0).text()
+        course = self.tableWidget.cellWidget(idx, 1).currentText()
+        campus = self.tableWidget.cellWidget(idx, 2).currentText()
+        phone = self.tableWidget.cellWidget(idx, 3).displayText()
+
+        a = Aluno(nome, aluno['rg'], aluno['cpf'], aluno['birthDate'], course, campus, aluno['cep'],
+                  aluno['address'], aluno['address_complement'], aluno['address_number'], aluno['address_city'], aluno['address_uf'],
+                  aluno['face_id'], aluno['phone'])
+
+        self.controller.deletar(a, self.centralwidget)
 
 # def main():
 #     import sys
