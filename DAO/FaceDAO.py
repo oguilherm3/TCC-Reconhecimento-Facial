@@ -17,7 +17,7 @@ def insert(face):
         return file_id
     except Exception as e:
         print('Error in mongo insert: ', e)
-
+        return False
 
 def delete_by_id(file_id):
     try:

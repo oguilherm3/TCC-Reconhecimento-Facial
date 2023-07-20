@@ -32,8 +32,12 @@ def listaAlunos():
 def update(aluno):
     try:
         collection = ConnectionFactory.getConnection('Aluno')
-        filtro = {"cpf": aluno.cpf}
-        att = {"$set": aluno.__dict__}
+        if type(aluno) != dict:
+            filtro = {"cpf": aluno.cpf}
+            att = {"$set": aluno.__dict__}
+        else:
+            filtro = {"cpf": aluno['cpf']}
+            att = {"$set": aluno}
         collection.update_one(filtro, att)
         return True
     except Exception as e:

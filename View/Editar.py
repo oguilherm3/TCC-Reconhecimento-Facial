@@ -10,7 +10,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 
-from PyQt5.QtWidgets import QMessageBox
 
 import takePicture
 from datetime import date, datetime
@@ -39,7 +38,6 @@ class Ui_EditWindow(object):
 
         EditWindow.setObjectName("EditWindow")
         EditWindow.setFixedSize(1045, 633)
-        # EditWindow.setMenuBar() TODO: Review!
         EditWindow.setStyleSheet('background-color: rgb(255, 255, 255);')
         self.centralwidget = QtWidgets.QWidget(EditWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -143,7 +141,6 @@ class Ui_EditWindow(object):
         self.frame.setObjectName("frame")
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setGeometry(QtCore.QRect(20, 10, 421, 330))
-        # self.label.setStyleSheet("image: url(" + self.path + ");")
         self.label.setText("")
         self.label.setObjectName("label")
         self.frame_2 = QtWidgets.QFrame(self.centralwidget)
@@ -194,45 +191,11 @@ class Ui_EditWindow(object):
 
     def update_photo(self):
         self.label.setStyleSheet("image: url(" + self.controller.temp_path + ");")
+        self.controller.editar_photo(self.aluno['face_id']) # investigar porque está vindo como dict aqui
 
     def edit(self):
+        self.controller.editar()
 
-        nome = self.txtName.text()
-        rg = self.txtRG.text()
-        cpf = self.txtCPF.text()
-        birthDate = str(self.dateEdit.dateTime().date().toPyDate())
-        course = self.cbxCourse.currentText()
-        campus = self.cbxCampus.currentText()
-        cep = self.txtCEP.displayText().strip()
-        address = self.txtAddress.displayText()
-        address_complement = self.txtComplement.displayText()
-        address_city = self.txtCity.displayText()
-        address_number = self.txtNumber.displayText()
-        address_uf = self.cbxUF.currentText()
-        phone = self.txtPhone.displayText()
-        face_id = self.aluno['face_id']
-
-        a = Aluno(nome, rg, cpf, birthDate, course, campus, cep,
-                  address, address_complement, address_number, address_city, address_uf,
-                  face_id, phone)
-
-        self.verificaCep(cep)
-
-        if self.btnEdit.isEnabled():
-            resultado = a.atualiza_student()
-        else:
-            resultado = False
-
-        if resultado:
-            return QMessageBox.information(self.centralwidget, 'Sucesso', 'O Aluno foi atualizado com sucesso!')
-        else:
-            return QMessageBox.warning(self.centralwidget, 'Aviso', 'Revise os dados do Aluno!')
-
-    def get_faceId(self, aluno_nome):
-        face = Face(
-            filename=aluno_nome + '.png'
-        )
-        return face.insert_face()
 
     def autoFillAluno(self, aluno):
         self.aluno = aluno
@@ -263,13 +226,6 @@ class Ui_EditWindow(object):
                 self.txtCity.setText(cidade)
             else:
                 self.txtAddress.setText('CEP Inválido')
-
-    def verificaCep(self, cep):
-        if not (len(cep) < 12 and cep != 'CEP Inválido'):
-            self.btnEdit.setEnabled(False)
-            return QMessageBox.warning(self.centralwidget, 'Aviso', 'CEP Inválido!')
-        else:
-            self.btnEdit.setEnabled(True)
 
     def retranslateUi(self, EditWindow):
         _translate = QtCore.QCoreApplication.translate

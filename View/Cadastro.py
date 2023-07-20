@@ -224,9 +224,7 @@ class Ui_RegisterWindow(object):
             face_id='', phone=self.txtPhone.displayText()
         )
 
-        a.face_id = self.get_faceId(a.nome)
-
-        self.controller.cadastrar(a, self.centralwidget)
+        self.controller.cadastrar(a)
 
     def verificaCep(self, cep):
         if not (len(cep) > 8 and cep != 'CEP Inválido'):
@@ -234,12 +232,6 @@ class Ui_RegisterWindow(object):
             return QMessageBox.warning(self.centralwidget, 'Aviso', 'CEP Inválido!')
         else:
             self.btnRegister.setEnabled(True)
-
-    def get_faceId(self, aluno_nome):
-        face = Face(
-            filename=aluno_nome + '.png'
-        )
-        return face.insert_face()
 
     def autoFillCep(self):
         if len(self.txtCEP.text()) == 11:
