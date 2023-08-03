@@ -49,7 +49,7 @@ print('Encoding complete')
 cap = cv2.VideoCapture(0)
 condition = True
 comando = ""
-count = 0
+retry = 0
 while condition:
     success, img = cap.read()
     imgS = cv2.resize(img, (0, 0), None, 0.25, 0.25)
@@ -60,28 +60,26 @@ while condition:
 
     for encodeFace, faceLoc in zip(encodesCurFrame, facesCurFrame):
         matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
-        # print('matches', matches)
         faceDis = face_recognition.face_distance(encodeListKnown, encodeFace)
-        # print('faceDis: ', faceDis)
         matchIndex = np.argmin(faceDis)
 
         if matches[matchIndex]:
             name = classNames[matchIndex].upper()
 
-            # print(name)
             y1, x2, y2, x1 = faceLoc
             y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
             cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
             cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
             print("teste")
-            if count < 4:
+            if retry in range(0, 3, 1):
                 ligar_led()
-                count = count + 1
-                print(count)
+                retry = retry + 1
+                print(retry)
 
-        # else:
-        #     desligar_led()
+            elif retry in range(4, 6, 1):
+                desligar_led()
+
 
     cv2.imshow('Webcam', img)
     cv2.waitKey(1)
