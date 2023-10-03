@@ -27,11 +27,9 @@ class Ui_RegisterWindow(object):
     def __init__(self, controller):
         self.cadastrar = QtWidgets.QMainWindow()
         self.ui = Ui_RegisterWindow
-        self.ui.setupUi(self, self.cadastrar)
         self.controller = controller
+        self.ui.setupUi(self, self.cadastrar)
 
-    cursos = Curso().get_lista()
-    campi = Campus().get_lista()
 
     def setupUi(self, RegisterWindow):
 
@@ -153,18 +151,20 @@ class Ui_RegisterWindow(object):
         self.lblCourse = QtWidgets.QLabel(self.frame_2)
         self.lblCourse.setGeometry(QtCore.QRect(10, 10, 47, 13))
         self.lblCourse.setObjectName("lblCourse")
+        cursos = self.cursos_list()
         self.cbxCourse = QtWidgets.QComboBox(self.frame_2)
         self.cbxCourse.setGeometry(QtCore.QRect(10, 30, 191, 22))
         self.cbxCourse.setObjectName("cbxCourse")
-        self.cbxCourse.addItems(self.cursos)
+        self.cbxCourse.addItems(cursos)
         self.cbxCourse.setCurrentText('-')
         self.lblCampus = QtWidgets.QLabel(self.frame_2)
         self.lblCampus.setGeometry(QtCore.QRect(210, 10, 47, 13))
+        campi = self.campi_list()
         self.lblCampus.setObjectName("lblCampus")
         self.cbxCampus = QtWidgets.QComboBox(self.frame_2)
         self.cbxCampus.setGeometry(QtCore.QRect(210, 30, 191, 22))
         self.cbxCampus.setObjectName("cbxCampus")
-        self.cbxCampus.addItems(self.campi)
+        self.cbxCampus.addItems(campi)
         self.cbxCampus.setCurrentText('-')
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(700, 420, 151, 31))
@@ -204,6 +204,12 @@ class Ui_RegisterWindow(object):
 
         self.retranslateUi(RegisterWindow)
         QtCore.QMetaObject.connectSlotsByName(RegisterWindow)
+
+    def cursos_list(self):
+        return self.controller.getCursos()
+
+    def campi_list(self):
+        return self.controller.getCampi()
 
     def takePicture(self):
         img = takePicture.capture()

@@ -11,9 +11,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QHeaderView, QTableWidgetItem, QPushButton, QComboBox, QLineEdit
 import os
 
-from Model.Campus import Campus
-from Model.Curso import Curso
-
 
 class Ui_ListWindow(object):
 

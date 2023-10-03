@@ -4,6 +4,7 @@ from Controller.Control import Control
 from Model.Face import Face, get_face_by_id, delete_face_by_id
 from Model.Aluno import Aluno
 from View.Editar import Ui_EditWindow
+from Model import Campus, Curso
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
@@ -89,3 +90,9 @@ class EditarController(Control):
             return QMessageBox.warning(self.tela.centralwidget, 'Aviso', 'CEP Inválido!')
         else:
             self.tela.btnEdit.setEnabled(True)
+
+    def getCursos(self):
+        return Curso.get_lista()
+
+    def getCampi(self):
+        return Campus.get_lista()

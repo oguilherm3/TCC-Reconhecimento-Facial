@@ -7,7 +7,8 @@ def get_Alunos():
 
 
 class Aluno(Pessoa):
-    def __init__(self, nome, rg, cpf, birthDate, course, campus, cep, address, address_complement, address_number, address_city, address_uf, face_id, phone):  # Aluno Constructor
+    def __init__(self, nome, rg, cpf, birthDate, course, campus, cep, address, address_complement, address_number,
+                 address_city, address_uf, face_id, phone):  # Aluno Constructor
         super().__init__(nome, rg, cpf, birthDate)  # Pessoa Constructor
         self.course = course
         self.campus = campus

@@ -4,6 +4,7 @@ from Controller.Control import Control
 from Model.Aluno import Aluno
 from Model.Face import Face
 from View.Cadastro import Ui_RegisterWindow
+from Model import Curso, Campus
 
 
 class CadastrarController(Control):
@@ -36,3 +37,9 @@ class CadastrarController(Control):
                                            'Houve um erro ao cadastrar a foto do aluno')
         else:
             return QMessageBox.warning(self.tela.centralwidget, 'Falha', 'O Aluno não foi cadastrado')
+
+    def getCursos(self):
+        return Curso.get_lista()
+
+    def getCampi(self):
+        return Campus.get_lista()

@@ -27,12 +27,9 @@ class Ui_EditWindow(object):
     def __init__(self, controller):
         self.editar = QtWidgets.QMainWindow()
         self.ui = Ui_EditWindow
-        self.ui.setupUi(self, self.editar)
         self.controller = controller
+        self.ui.setupUi(self, self.editar)
         self.aluno = Aluno('', '', '', '', '', '', '', '', '', '', '', '', '', '')
-
-    cursos = Curso().get_lista()
-    campi = Campus().get_lista()
 
     def setupUi(self, EditWindow):
 
@@ -148,21 +145,23 @@ class Ui_EditWindow(object):
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
+        cursos = self.cursos_list()
         self.lblCourse = QtWidgets.QLabel(self.frame_2)
         self.lblCourse.setGeometry(QtCore.QRect(10, 10, 47, 13))
         self.lblCourse.setObjectName("lblCourse")
         self.cbxCourse = QtWidgets.QComboBox(self.frame_2)
         self.cbxCourse.setGeometry(QtCore.QRect(10, 30, 191, 22))
         self.cbxCourse.setObjectName("cbxCourse")
-        self.cbxCourse.addItems(self.cursos)
+        self.cbxCourse.addItems(cursos)
         self.cbxCourse.setCurrentText('-')
         self.lblCampus = QtWidgets.QLabel(self.frame_2)
         self.lblCampus.setGeometry(QtCore.QRect(210, 10, 47, 13))
         self.lblCampus.setObjectName("lblCampus")
+        campi = self.campi_list()
         self.cbxCampus = QtWidgets.QComboBox(self.frame_2)
         self.cbxCampus.setGeometry(QtCore.QRect(210, 30, 191, 22))
         self.cbxCampus.setObjectName("cbxCampus")
-        self.cbxCampus.addItems(self.campi)
+        self.cbxCampus.addItems(campi)
         self.cbxCampus.setCurrentText('-')
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(700, 420, 151, 31))
@@ -182,6 +181,12 @@ class Ui_EditWindow(object):
 
         self.retranslateUi(EditWindow)
         QtCore.QMetaObject.connectSlotsByName(EditWindow)
+
+    def cursos_list(self):
+        return self.controller.getCursos()
+
+    def campi_list(self):
+        return self.controller.getCampi()
 
     def takePicture(self):
         img = takePicture.capture()
