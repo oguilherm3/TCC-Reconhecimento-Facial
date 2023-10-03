@@ -20,12 +20,6 @@ class Aluno(Pessoa):
         self.face_id = face_id
         self.phone = phone
 
-    def raGenerator(self):
-        pass
-
-    def findFace(self):
-        pass
-
     def insert_student(self):
         return AlunoDAO.insert(self)
 
@@ -38,5 +32,3 @@ class Aluno(Pessoa):
 
     def delete_student(self):
         return AlunoDAO.delete(self)
-
-

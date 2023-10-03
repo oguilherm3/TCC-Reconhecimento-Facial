@@ -1,7 +1,7 @@
 import os
 
 
-from Model import Face
+from Model import Face, Aluno, Curso, Campus
 import EditarController
 import CadastrarController
 from Controller.Control import Control
@@ -51,6 +51,15 @@ class ListarController(Control):
                 return QMessageBox.information(widget, 'Falha', 'Houve um problema na deleção')
         else:
             pass
+
+    def getAlunos(self):
+        return Aluno.get_Alunos()
+
+    def getCursos(self):
+        return Curso.get_lista()
+
+    def getCampi(self):
+        return Campus.get_lista()
 
     def run(self):
         sys.exit(self.app.exec_())

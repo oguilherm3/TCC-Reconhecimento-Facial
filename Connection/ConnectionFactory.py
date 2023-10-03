@@ -30,7 +30,6 @@ class ConnectionFactory:
         endpoint = "https://viacep.com.br/ws/CEP/json/".replace('CEP', cep)
         try:
             response = requests.get(endpoint, timeout=5).json()
-            #print(f'{response}')
             if 'erro' in response:
                 return 'Invalid'
             else:
