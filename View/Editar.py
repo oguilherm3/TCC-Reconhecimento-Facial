@@ -171,7 +171,7 @@ class Ui_EditWindow(object):
         self.btnEdit = QtWidgets.QPushButton(self.centralwidget)
         self.btnEdit.setGeometry(QtCore.QRect(470, 550, 91, 41))
         self.btnEdit.setObjectName("btnRegister")
-        self.btnEdit.clicked.connect(self.edit)
+        self.btnEdit.clicked.connect(self.controller.editar)
         EditWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(EditWindow)
@@ -186,10 +186,6 @@ class Ui_EditWindow(object):
     def update_photo(self):
         self.label.setStyleSheet("image: url(" + self.controller.temp_path + ");")
         self.controller.editar_photo(self.aluno['face_id']) # investigar porque está vindo como dict aqui
-
-    def edit(self):
-        self.controller.editar()
-
 
     def autoFillAluno(self, aluno):
         self.aluno = aluno
