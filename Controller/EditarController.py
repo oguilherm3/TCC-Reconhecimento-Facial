@@ -100,9 +100,3 @@ class EditarController(Control):
                 self.tela.txtAddress.setText('CEP Inválido')
                 self.tela.btnEdit.setEnabled(False)
                 return QMessageBox.warning(self.tela.centralwidget, 'Aviso', 'Revise os dados do Aluno!')
-
-    def getCursos(self):
-        return Curso.get_lista()
-
-    def getCampi(self):
-        return Campus.get_lista()
