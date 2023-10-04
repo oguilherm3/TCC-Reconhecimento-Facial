@@ -27,7 +27,6 @@ class EditarController(Control):
             self.tela.editar.show()
             QMessageBox.information(self.tela.centralwidget, 'Aviso', 'O Aluno não possui uma foto '
                                                                       'cadastrada')
-            self.tela.editar.show()
 
     def editar(self):
         nome = self.tela.txtName.text()
