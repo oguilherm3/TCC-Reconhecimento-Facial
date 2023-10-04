@@ -1,11 +1,10 @@
 from PyQt5.QtWidgets import QMessageBox
 
 from Controller.Control import Control
+from Connection.ConnectionFactory import ConnectionFactory
 from Model.Aluno import Aluno
 from Model.Face import Face
 from View.Cadastro import Ui_RegisterWindow
-from Model import Curso, Campus
-
 
 class CadastrarController(Control):
     def __init__(self):
@@ -38,8 +37,18 @@ class CadastrarController(Control):
         else:
             return QMessageBox.warning(self.tela.centralwidget, 'Falha', 'O Aluno não foi cadastrado')
 
-    def getCursos(self):
-        return Curso.get_lista()
-
-    def getCampi(self):
-        return Campus.get_lista()
+    def auto_fill_cep(self):
+        if len(self.tela.txtCEP.text()) == 11:
+            cep = self.tela.txtCEP.text().replace('-', '').replace(' ', '')
+            result = ConnectionFactory.getCep(cep)
+            if result != 'Invalid':
+                endereco = result["logradouro"] + ', ' + result["bairro"]
+                uf = result["uf"]
+                cidade = result["localidade"]
+                self.tela.txtAddress.setText(endereco)
+                self.tela.cbxUF.addItem(uf)
+                self.tela.txtCity.setText(cidade)
+                self.tela.btnRegister.setEnabled(True)
+            else:
+                self.tela.txtAddress.setText('CEP Inválido')
+                return QMessageBox.warning(self.tela.centralwidget, 'Aviso', 'Revise os dados do Aluno!')

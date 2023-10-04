@@ -15,15 +15,14 @@ from PIL import Image
 
 from Connection.ConnectionFactory import ConnectionFactory
 from Model.Aluno import Aluno
-from Model.Campus import get_lista
 
 
 class Ui_EditWindow(object):
 
     def __init__(self, controller):
         self.editar = QtWidgets.QMainWindow()
-        self.ui = Ui_EditWindow
         self.controller = controller
+        self.ui = Ui_EditWindow
         self.ui.setupUi(self, self.editar)
         self.aluno = Aluno('', '', '', '', '', '', '', '', '', '', '', '', '', '')
 
@@ -87,7 +86,7 @@ class Ui_EditWindow(object):
         self.txtCEP.setObjectName("txtCEP")
         self.txtCEP.setInputMask("00000 - 000")
         self.txtCEP.setMaxLength(8)
-        self.txtCEP.textEdited.connect(self.autoFillCep)
+        self.txtCEP.textEdited.connect(self.controller.valida_cep)
         self.lblCEP = QtWidgets.QLabel(self.frRegister)
         self.lblCEP.setGeometry(QtCore.QRect(20, 220, 71, 16))
         self.lblCEP.setObjectName("lblCEP")
@@ -141,7 +140,7 @@ class Ui_EditWindow(object):
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
-        cursos = self.cursos_list()
+        cursos = self.controller.cursos_list()
         self.lblCourse = QtWidgets.QLabel(self.frame_2)
         self.lblCourse.setGeometry(QtCore.QRect(10, 10, 47, 13))
         self.lblCourse.setObjectName("lblCourse")
@@ -153,7 +152,7 @@ class Ui_EditWindow(object):
         self.lblCampus = QtWidgets.QLabel(self.frame_2)
         self.lblCampus.setGeometry(QtCore.QRect(210, 10, 47, 13))
         self.lblCampus.setObjectName("lblCampus")
-        campi = self.campi_list()
+        campi = self.controller.campi_list()
         self.cbxCampus = QtWidgets.QComboBox(self.frame_2)
         self.cbxCampus.setGeometry(QtCore.QRect(210, 30, 191, 22))
         self.cbxCampus.setObjectName("cbxCampus")
@@ -177,12 +176,6 @@ class Ui_EditWindow(object):
 
         self.retranslateUi(EditWindow)
         QtCore.QMetaObject.connectSlotsByName(EditWindow)
-
-    def cursos_list(self):
-        return self.controller.getCursos()
-
-    def campi_list(self):
-        return self.controller.getCampi()
 
     def takePicture(self):
         img = takePicture.capture()
@@ -213,20 +206,6 @@ class Ui_EditWindow(object):
         self.txtNumber.setText(aluno['address_number'])
         self.cbxUF.addItem(aluno['address_uf'])
         self.txtPhone.setText(aluno['phone'])
-
-    def autoFillCep(self):
-        if len(self.txtCEP.text()) == 11:
-            cep = self.txtCEP.text().replace('-', '').replace(' ', '')
-            result = ConnectionFactory.getCep(cep)
-            if result != 'Invalid':
-                endereco = result["logradouro"] + ', ' + result["bairro"]
-                uf = result["uf"]
-                cidade = result["localidade"]
-                self.txtAddress.setText(endereco)
-                self.cbxUF.addItem(uf)
-                self.txtCity.setText(cidade)
-            else:
-                self.txtAddress.setText('CEP Inválido')
 
     def retranslateUi(self, EditWindow):
         _translate = QtCore.QCoreApplication.translate

@@ -20,18 +20,16 @@ class Ui_ListWindow(object):
         self.controller = controller
         self.ui.setupUi(self, self.listar)
 
-
-    logo_path = os.getcwd().replace('Controller', 'Resources').replace('\\', '/') + '/Images/unip-logo.png'
-
     def setupUi(self, ListWindow):
         ListWindow.setObjectName("ListWindow")
         ListWindow.setFixedSize(1192, 727)
         ListWindow.setStyleSheet('background-color: rgb(255, 255, 255);')
         self.centralwidget = QtWidgets.QWidget(ListWindow)
         self.centralwidget.setObjectName("centralwidget")
+        logo_path = os.getcwd().replace('Controller', 'Resources').replace('\\', '/') + '/Images/unip-logo.png'
         self.lblLogo = QtWidgets.QLabel(self.centralwidget)
         self.lblLogo.setGeometry(QtCore.QRect(-10, 0, 251, 91))
-        self.lblLogo.setStyleSheet("image: url(" + self.logo_path + ");")
+        self.lblLogo.setStyleSheet("image: url(" + logo_path + ");")
         self.lblLogo.setText("")
         self.lblLogo.setObjectName("lblLogo")
         self.lblTitulo = QtWidgets.QLabel(self.centralwidget)

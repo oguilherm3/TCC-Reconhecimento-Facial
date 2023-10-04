@@ -4,7 +4,7 @@ from Controller.Control import Control
 from Model.Face import Face, get_face_by_id, delete_face_by_id
 from Model.Aluno import Aluno
 from View.Editar import Ui_EditWindow
-from Model import Campus, Curso
+from Connection.ConnectionFactory import ConnectionFactory
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
@@ -24,6 +24,7 @@ class EditarController(Control):
             self.tela.editar.show()
         else:
             self.tela.label.setStyleSheet("image: url(" + self.register_path + ");")
+            self.tela.editar.show()
             QMessageBox.information(self.tela.centralwidget, 'Aviso', 'O Aluno não possui uma foto '
                                                                       'cadastrada')
             self.tela.editar.show()
@@ -47,8 +48,6 @@ class EditarController(Control):
         a = Aluno(nome, rg, cpf, birthDate, course, campus, cep,
                   address, address_complement, address_number, address_city, address_uf,
                   face_id, phone)
-
-        self.verificaCep(a.cep)
 
         if self.tela.btnEdit.isEnabled():
             resultado = a.atualiza_student()
@@ -84,12 +83,24 @@ class EditarController(Control):
             return QMessageBox.warning(self.tela.centralwidget, 'Falha',
                                        'Houve um erro ao cadastrar a foto do aluno')
 
-    def verificaCep(self, cep):
-        if not (len(cep) < 12 and cep != 'CEP Inválido'):
-            self.tela.btnEdit.setEnabled(False)
-            return QMessageBox.warning(self.tela.centralwidget, 'Aviso', 'CEP Inválido!')
-        else:
-            self.tela.btnEdit.setEnabled(True)
+    def valida_cep(self):
+        cep = self.tela.txtCEP.text()
+        if len(cep) == 11:
+            cep_format = cep.replace('-', '').replace(' ', '')
+            result = ConnectionFactory.getCep(cep_format)
+            if result != 'Invalid':
+                endereco = result["logradouro"] + ', ' + result["bairro"]
+                uf = result["uf"]
+                cidade = result["localidade"]
+                self.tela.txtAddress.setText(endereco)
+                self.tela.cbxUF.addItem(uf)
+                self.tela.txtCity.setText(cidade)
+                self.tela.btnEdit.setEnabled(True)
+                return True
+            else:
+                self.tela.txtAddress.setText('CEP Inválido')
+                self.tela.btnEdit.setEnabled(False)
+                return QMessageBox.warning(self.tela.centralwidget, 'Aviso', 'Revise os dados do Aluno!')
 
     def getCursos(self):
         return Curso.get_lista()
