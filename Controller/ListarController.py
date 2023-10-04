@@ -1,7 +1,5 @@
 import os
 
-
-
 import EditarController
 import CadastrarController
 from Controller.Control import Control
@@ -55,7 +53,6 @@ class ListarController(Control):
 
     def getAlunos(self):
         return Aluno.get_Alunos()
-
 
     def run(self):
         sys.exit(self.app.exec_())
