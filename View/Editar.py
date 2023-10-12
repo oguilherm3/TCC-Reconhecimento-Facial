@@ -9,11 +9,11 @@
 
 from PyQt5 import QtCore, QtWidgets
 
-import takePicture
+from Utility.Foto import capturar
+import numpy
 from datetime import date
 from PIL import Image
 
-from Connection.ConnectionFactory import ConnectionFactory
 from Model.Aluno import Aluno
 
 
@@ -178,14 +178,14 @@ class Ui_EditWindow(object):
         QtCore.QMetaObject.connectSlotsByName(EditWindow)
 
     def takePicture(self):
-        img = takePicture.capture()
-        Image.fromarray(img).save(self.controller.temp_path)
-
-        self.update_photo()
+        img = capturar()
+        if isinstance(img, numpy.ndarray):
+            Image.fromarray(img).save(self.controller.temp_path)
+            self.update_photo()
 
     def update_photo(self):
         self.label.setStyleSheet("image: url(" + self.controller.temp_path + ");")
-        self.controller.editar_photo(self.aluno['face_id']) # investigar porque está vindo como dict aqui
+        self.controller.editar_photo(self.aluno['face_id'])
 
     def autoFillAluno(self, aluno):
         self.aluno = aluno

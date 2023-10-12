@@ -60,27 +60,32 @@ class EditarController(Control):
 
     def editar_photo(self, face_id):
 
-        # a = Aluno()
-        # pegar a foto atual e excluir
-        delete_face_by_id(face_id)
-        # inserir a nova foto e atualizar o id no aluno
-        face = Face(
-                filename=self.aluno['nome'] + ".png"
-        )
+        resposta = QMessageBox.question(self.tela.centralwidget, 'Alerta!', f'Deseja atualizar a foto?',
+                                        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
-        res_id = face.insert_face()
+        if resposta == QMessageBox.Yes:
 
-        if res_id != False:
-            self.aluno['face_id'] = res_id
-            if Aluno.atualiza_student(self.aluno):
-                return QMessageBox.information(self.tela.centralwidget, 'Sucesso',
-                                               'A foto do aluno foi atualizada')
+            # a = Aluno()
+            # pegar a foto atual e excluir
+            delete_face_by_id(face_id)
+            # inserir a nova foto e atualizar o id no aluno
+            face = Face(
+                    filename=self.aluno['nome'] + ".png"
+            )
+
+            res_id = face.insert_face()
+
+            if res_id != False:
+                self.aluno['face_id'] = res_id
+                if Aluno.atualiza_student(self.aluno):
+                    return QMessageBox.information(self.tela.centralwidget, 'Sucesso',
+                                                   'A foto do aluno foi atualizada')
+                else:
+                    return QMessageBox.warning(self.tela.centralwidget, 'Falha',
+                                               'Houve um erro ao cadastrar a foto do aluno')
             else:
                 return QMessageBox.warning(self.tela.centralwidget, 'Falha',
                                            'Houve um erro ao cadastrar a foto do aluno')
-        else:
-            return QMessageBox.warning(self.tela.centralwidget, 'Falha',
-                                       'Houve um erro ao cadastrar a foto do aluno')
 
     def valida_cep(self):
         cep = self.tela.txtCEP.text()
