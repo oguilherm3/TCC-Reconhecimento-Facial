@@ -10,6 +10,7 @@ import numpy
 from Utility.Foto import capturar
 from PyQt5 import QtCore, QtWidgets
 from datetime import date
+from PIL import Image
 
 from Model.Aluno import Aluno
 
