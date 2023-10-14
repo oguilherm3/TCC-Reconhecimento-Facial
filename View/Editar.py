@@ -12,7 +12,6 @@ from PyQt5 import QtCore, QtWidgets
 from Utility.Foto import capturar
 import numpy
 from datetime import date
-from PIL import Image
 
 from Model.Aluno import Aluno
 
