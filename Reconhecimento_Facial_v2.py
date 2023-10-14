@@ -1,3 +1,5 @@
+import time
+
 import cv2
 import numpy as np
 import face_recognition
@@ -13,7 +15,7 @@ fs = gridfs.GridFS(db, "Face")
 path = './Resources/Temp/img.png'
 images = []
 nomesAlunos = []
-#porta_serial = serial.Serial('COM4', 9600)
+porta_serial = serial.Serial('COM3', 9600)
 
 
 def encontrarEncodins(image_list):
@@ -58,6 +60,8 @@ while True:
     facesFrameAtual = face_recognition.face_locations(ImagemP)  # find all locations in small image
     encodeFrameAtual = face_recognition.face_encodings(ImagemP, facesFrameAtual)  # send the faces & its locations
 
+    time.sleep(2)
+
     #print(f"FACES: {facesFrameAtual}")
     if facesFrameAtual:
         for encodeFace, faceLoc in zip(encodeFrameAtual, facesFrameAtual):
@@ -75,8 +79,12 @@ while True:
                 cv2.rectangle(imagem, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 cv2.rectangle(imagem, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
                 cv2.putText(imagem, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
-                #if retry in range(0, 3, 1):
+                if retry in range(0, 1, 1):
+                    if retry == 1:
+                        pass
+                    destravar()
+                    retry = retry + 1
+                    print(retry)
 
     cv2.imshow('Webcam', imagem)
-    # time
-    # if
+    cv2.waitKey(27)
